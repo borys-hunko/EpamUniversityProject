@@ -1,6 +1,7 @@
 package com.epam.EpamUniversityProject.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Applicant extends User implements Serializable {
     private String firstName;
@@ -9,6 +10,7 @@ public class Applicant extends User implements Serializable {
     private String region;
     private String city;
     private String school;
+    private List<Grade> grades;
 
     public String getFirstName() {
         return firstName;
@@ -50,17 +52,23 @@ public class Applicant extends User implements Serializable {
         return city;
     }
 
-    public Applicant setCity(String city) {
+    public void setCity(String city) {
         this.city = city;
-        return this;
     }
 
     public String getSchool() {
         return school;
     }
 
-    public Applicant setSchool(String school) {
+    public void setSchool(String school) {
         this.school = school;
-        return this;
+    }
+
+    public List<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<Grade> grades) {
+        this.grades = grades;
     }
 }
