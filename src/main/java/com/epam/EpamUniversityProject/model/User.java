@@ -8,50 +8,54 @@ public class User {
     private String password;
     private Role role;
     private boolean isBlocked;
+    private String locale;
 
     public long getId() {
         return id;
     }
 
-    public User setId(long id) {
+    public void setId(long id) {
         this.id = id;
-        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public User setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
-        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public User setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
-        return this;
     }
 
     public Role getRole() {
         return role;
     }
 
-    public User setRole(Role role) {
+    public void setRole(Role role) {
         this.role = role;
-        return this;
     }
 
     public boolean isBlocked() {
         return isBlocked;
     }
 
-    public User setBlocked(boolean blocked) {
+    public void setBlocked(boolean blocked) {
         isBlocked = blocked;
-        return this;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
     @Override
