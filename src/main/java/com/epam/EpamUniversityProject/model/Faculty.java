@@ -1,10 +1,12 @@
 package com.epam.EpamUniversityProject.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class Faculty {
     private long id;
-    private String name;
+    //first parameter-lang, second-name
+    private Map<String, String> name;
     private int budgedPlaces;
     private int totalPaces;
     private List<Subject> requiredSubjects;
@@ -18,11 +20,11 @@ public class Faculty {
         return this;
     }
 
-    public String getName() {
+    public Map<String, String> getName() {
         return name;
     }
 
-    public Faculty setName(String name) {
+    public Faculty setName(Map<String, String> name) {
         this.name = name;
         return this;
     }
