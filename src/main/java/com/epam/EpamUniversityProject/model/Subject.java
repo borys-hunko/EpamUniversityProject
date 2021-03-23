@@ -1,11 +1,8 @@
 package com.epam.EpamUniversityProject.model;
 
-import java.util.Map;
-
 public class Subject {
     private long id;
-    //first parameter-lang, second-name
-    private Map<String, String> name;
+    private String name;
 
     public long getId() {
         return id;
@@ -16,11 +13,11 @@ public class Subject {
         return this;
     }
 
-    public Map<String, String> getName() {
+    public String getName() {
         return name;
     }
 
-    public Subject setName(Map<String, String> name) {
+    public Subject setName(String name) {
         this.name = name;
         return this;
     }
