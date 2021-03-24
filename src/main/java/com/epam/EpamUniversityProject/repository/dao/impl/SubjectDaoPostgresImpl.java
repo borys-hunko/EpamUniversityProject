@@ -24,7 +24,7 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
     private static final String SQL_GET_SUBJECT = "select * from subject where id=?;";
 
     @Override
-    public void add(Subject item) throws IOException, SQLException {
+    public void add(Subject item) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
@@ -39,7 +39,7 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
             item.setId(rs.getLong(Fields.SUBJECT_ID));
             log.info("add->item successfully added");
             DBManager.getInstance().commitAndClose(connection);
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             log.error("add->" + e.getMessage());
             DBManager.getInstance().rollBackAndClose(connection);
             throw e;
@@ -50,21 +50,21 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
     }
 
     @Override
-    public Subject get(long id) throws IOException, SQLException {
+    public Subject get(long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         try {
             connection = DBManager.getInstance().getConnection();
             statement = connection.prepareStatement(SQL_GET_SUBJECT);
-            statement.setLong(1,id);
+            statement.setLong(1, id);
             rs = statement.executeQuery();
             Subject subject = null;
             if (rs.next()) {
                 subject = mapper.mapRow(rs);
             }
             return subject;
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             log.error("get->" + e.getMessage());
             throw e;
         } finally {
@@ -75,7 +75,7 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
     }
 
     @Override
-    public void update(Subject newItem) throws IOException, SQLException {
+    public void update(Subject newItem) throws SQLException {
 
     }
 
@@ -85,7 +85,7 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
     }
 
     @Override
-    public List<Subject> getAll() throws IOException, SQLException {
+    public List<Subject> getAll() throws SQLException {
         return null;
     }
 
@@ -107,10 +107,10 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
 
     public static void main(String[] args) {
         try {
-            SubjectDao dao=new SubjectDaoPostgresImpl();
-            Subject subject=dao.get(1);
+            SubjectDao dao = new SubjectDaoPostgresImpl();
+            Subject subject = dao.get(1);
             System.out.println(subject.getName());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

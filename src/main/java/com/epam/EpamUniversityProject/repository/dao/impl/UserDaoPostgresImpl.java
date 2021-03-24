@@ -1,22 +1,24 @@
 package com.epam.EpamUniversityProject.repository.dao.impl;
 
+import com.epam.EpamUniversityProject.model.Grade;
 import com.epam.EpamUniversityProject.model.Role;
 import com.epam.EpamUniversityProject.model.User;
-import com.epam.EpamUniversityProject.repository.dao.interfaces.Dao;
+import com.epam.EpamUniversityProject.repository.dao.interfaces.GradeDao;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.UserDao;
 import com.epam.EpamUniversityProject.repository.util.DBManager;
 import com.epam.EpamUniversityProject.repository.util.Fields;
 import com.epam.EpamUniversityProject.repository.util.Mapper;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoPostgresImpl implements UserDao {
-    private Logger logger = Logger.getLogger(UserDaoPostgresImpl.class);
-    private UserMapper mapper = new UserMapper();
+    private final Logger logger = Logger.getLogger(UserDaoPostgresImpl.class);
+    private final UserMapper mapper = new UserMapper();
+    private final GradeDao gradeDao = new GradeDaoPostgresImpl();
     private static final String SQL_ADD_USER = "insert into university_user(email, password, role)" +
             "values (?, ?, ?);";
     private static final String SQL_READ_USER_BY_ID = "select * from university_user where id=?;";
@@ -26,7 +28,7 @@ public class UserDaoPostgresImpl implements UserDao {
     private static final String SQL_GET_ALL = "select * from university_user;";
 
     @Override
-    public void add(User item) throws IOException, SQLException {
+    public void add(User item) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
@@ -44,7 +46,7 @@ public class UserDaoPostgresImpl implements UserDao {
             }
             DBManager.getInstance().commitAndClose(connection);
             logger.info("add() successfully added");
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             DBManager.getInstance().rollBackAndClose(connection);
             logger.error("add() " + e.getMessage());
             throw e;
@@ -55,7 +57,7 @@ public class UserDaoPostgresImpl implements UserDao {
     }
 
     @Override
-    public User get(long id) throws IOException, SQLException {
+    public User get(long id) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -70,8 +72,12 @@ public class UserDaoPostgresImpl implements UserDao {
             } else {
                 logger.info("no such element");
             }
+            if (user!=null){
+                List<Grade> grades = gradeDao.getUsersGrades(user.getId());
+                user.setGrades(grades);
+            }
             return user;
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             DBManager.getInstance().rollBackAndClose(connection);
             logger.error("get() " + e.getMessage());
             throw e;
@@ -83,7 +89,7 @@ public class UserDaoPostgresImpl implements UserDao {
     }
 
     @Override
-    public void update(User newItem) throws IOException, SQLException {
+    public void update(User newItem) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -94,7 +100,7 @@ public class UserDaoPostgresImpl implements UserDao {
             statement.setString(3, newItem.getRole().toString());
             statement.setLong(4, newItem.getId());
             logger.info("item successfully updated");
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             logger.error("update->" + e.getMessage());
             throw e;
         } finally {
@@ -109,7 +115,7 @@ public class UserDaoPostgresImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAll() throws IOException, SQLException {
+    public List<User> getAll() throws SQLException {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -119,10 +125,12 @@ public class UserDaoPostgresImpl implements UserDao {
             statement = connection.createStatement();
             rs = statement.executeQuery(SQL_GET_ALL);
             while (rs.next()) {
-                users.add(mapper.mapRow(rs));
+                User user = mapper.mapRow(rs);
+                user.setGrades(gradeDao.getUsersGrades(user.getId()));
+                users.add(user);
             }
             return users;
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             logger.error("getAll->" + e.getMessage());
             throw e;
         } finally {
@@ -133,7 +141,7 @@ public class UserDaoPostgresImpl implements UserDao {
     }
 
     @Override
-    public User getByEmail(String email) throws IOException, SQLException {
+    public User getByEmail(String email) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -152,7 +160,7 @@ public class UserDaoPostgresImpl implements UserDao {
             preparedStatement.close();
             return user;
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             logger.error("getByEmail() " + e.getMessage());
             e.printStackTrace();
             throw e;
@@ -168,11 +176,17 @@ public class UserDaoPostgresImpl implements UserDao {
         public User mapRow(ResultSet resultSet) {
             User user = new User();
             try {
-                user.setId(resultSet.getLong(Fields.USER_ID));
-                user.setEmail(resultSet.getString(Fields.USER_EMAIL));
-                user.setPassword(resultSet.getString(Fields.USER_PASSWORD));
-                user.setBlocked(resultSet.getBoolean(Fields.USER_IS_BLOCKED));
-                user.setRole(Role.valueOf(resultSet.getString(Fields.USER_ROLE)));
+                user.setId(resultSet.getLong(Fields.USER_ID))
+                        .setEmail(resultSet.getString(Fields.USER_EMAIL))
+                        .setPassword(resultSet.getString(Fields.USER_PASSWORD))
+                        .setBlocked(resultSet.getBoolean(Fields.USER_IS_BLOCKED))
+                        .setRole(Role.valueOf(resultSet.getString(Fields.USER_ROLE)))
+                        .setCity(resultSet.getString(Fields.USER_CITY))
+                        .setRegion(resultSet.getString(Fields.USER_REGION))
+                        .setSchool(resultSet.getString(Fields.USER_SCHOOL))
+                        .setFirstName(resultSet.getString(Fields.USER_FIRST_NAME))
+                        .setLastName(resultSet.getString(Fields.USER_LAST_NAME))
+                        .setFathersName(resultSet.getString(Fields.USER_FATHERS_NAME));
                 return user;
             } catch (SQLException e) {
                 logger.error("mapRow->" + e.getMessage());
@@ -184,9 +198,11 @@ public class UserDaoPostgresImpl implements UserDao {
     public static void main(String[] args) {
         UserDao dao = new UserDaoPostgresImpl();
         try {
-            User user = dao.getByEmail("vanya_yyyy44@ukr.net");
-            System.out.println(user.getEmail());
-        } catch (IOException | SQLException exception) {
+//            List<User> users=dao.getAll();
+//            for (User u:users){
+//                System.out.println(u);
+            System.out.println(dao.get(2));
+        } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
