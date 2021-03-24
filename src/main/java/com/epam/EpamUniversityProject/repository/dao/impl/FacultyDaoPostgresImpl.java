@@ -24,17 +24,17 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
             " join faculty f on f.id = rs.faculty where f.id=?;";
 
     @Override
-    public void add(Faculty item) throws IOException, SQLException {
+    public void add(Faculty item) throws  SQLException {
 
     }
 
     @Override
-    public Faculty get(long id) throws IOException, SQLException {
+    public Faculty get(long id) throws  SQLException {
         return null;
     }
 
     @Override
-    public void update(Faculty newItem) throws IOException, SQLException {
+    public void update(Faculty newItem) throws SQLException {
 
     }
 
@@ -44,7 +44,7 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
     }
 
     @Override
-    public List<Faculty> getAll() throws IOException, SQLException {
+    public List<Faculty> getAll() throws SQLException {
         Connection connection = null;
         Statement facsStatement = null;
         PreparedStatement subjsStatement = null;
@@ -63,7 +63,7 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
                 faculties.add(faculty);
             }
             return faculties;
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             log.error("getAll->"+e.getMessage());
             throw e;
         } finally {
