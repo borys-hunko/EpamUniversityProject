@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface Dao<T> {
-    void add(T item) throws IOException, SQLException;
-    T get(long id) throws IOException, SQLException;
-    void update(T newItem) throws IOException, SQLException;
+    void add(T item) throws SQLException;
+    T get(long id) throws SQLException;
+    void update(T newItem) throws SQLException;
     void delete(long id);
-    List<T> getAll() throws IOException, SQLException;
+    List<T> getAll() throws SQLException;
 }
