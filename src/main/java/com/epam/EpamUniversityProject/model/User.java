@@ -1,9 +1,10 @@
 package com.epam.EpamUniversityProject.model;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
-public class User {
+
+public class User implements Serializable {
     private long id;
     private String email;
     private String password;
@@ -21,96 +22,108 @@ public class User {
         return id;
     }
 
-    public void setId(long id) {
+    public User setId(long id) {
         this.id = id;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public Role getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public User setRole(Role role) {
         this.role = role;
+        return this;
     }
 
     public boolean isBlocked() {
         return isBlocked;
     }
 
-    public void setBlocked(boolean blocked) {
+    public User setBlocked(boolean blocked) {
         isBlocked = blocked;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public User setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public User setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getFathersName() {
         return fathersName;
     }
 
-    public void setFathersName(String fathersName) {
+    public User setFathersName(String fathersName) {
         this.fathersName = fathersName;
+        return this;
     }
 
     public String getRegion() {
         return region;
     }
 
-    public void setRegion(String region) {
+    public User setRegion(String region) {
         this.region = region;
+        return this;
     }
 
     public String getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public User setCity(String city) {
         this.city = city;
+        return this;
     }
 
     public String getSchool() {
         return school;
     }
 
-    public void setSchool(String school) {
+    public User setSchool(String school) {
         this.school = school;
+        return this;
     }
 
     public List<Grade> getGrades() {
         return grades;
     }
 
-    public void setGrades(List<Grade> grades) {
+    public User setGrades(List<Grade> grades) {
         this.grades = grades;
+        return this;
     }
 
     @Override
@@ -121,6 +134,13 @@ public class User {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", isBlocked=" + isBlocked +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", fathersName='" + fathersName + '\'' +
+                ", region='" + region + '\'' +
+                ", city='" + city + '\'' +
+                ", school='" + school + '\'' +
+                ", grades=" + grades +
                 '}';
     }
 }
