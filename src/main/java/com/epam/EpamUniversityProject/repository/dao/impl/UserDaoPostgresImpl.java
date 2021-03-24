@@ -126,9 +126,9 @@ public class UserDaoPostgresImpl implements UserDao {
             logger.error("getAll->" + e.getMessage());
             throw e;
         } finally {
-            DBManager.getInstance().close(rs);
-            DBManager.getInstance().close(statement);
-            DBManager.getInstance().close(connection);
+            DBManager.getInstance().close(rs)
+                    .close(statement)
+                    .close(connection);
         }
     }
 

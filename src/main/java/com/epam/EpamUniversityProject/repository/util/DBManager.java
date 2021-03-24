@@ -2,18 +2,20 @@ package com.epam.EpamUniversityProject.repository.util;
 
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.io.InputStream;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import java.io.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.SQLException;
-import java.util.Properties;
+
+
 
 public class DBManager {
     private static final Logger logger = Logger.getLogger(DBManager.class);
-    private static final String PROPERTIES_PATH = "database.properties";
     private static DBManager instance;
-    private final Properties DB_PROPERTIES =new Properties();
 
     public static synchronized DBManager getInstance() {
         if (instance == null) {
@@ -25,11 +27,21 @@ public class DBManager {
     private DBManager() {
     }
 
+
     public Connection getConnection() throws SQLException, IOException {
-        String url = getDBProperties().getProperty("database.url");
-        String user = getDBProperties().getProperty("database.user");
-        String password = getDBProperties().getProperty("database.password");
-        return DriverManager.getConnection(url, user, password);
+        Connection connection=null;
+        try {
+            Context initContext = new InitialContext();
+            Context envContext = (Context) initContext.lookup("java:/comp/env");
+
+            DataSource ds = (DataSource)envContext.lookup("jdbc/uni");
+            connection=ds.getConnection();
+        } catch (NamingException e) {
+            e.printStackTrace();
+            logger.error("Cannot obtain a connection from the pool", e);
+        }
+
+        return connection;
     }
 
     public void commitAndClose(Connection connection) throws SQLException {
@@ -39,17 +51,6 @@ public class DBManager {
         }
     }
 
-    private Properties getDBProperties() throws IOException {
-        if (DB_PROPERTIES.isEmpty()) {
-            try (InputStream stream = DBManager.class.
-                    getClassLoader().
-                    getResourceAsStream(DBManager.PROPERTIES_PATH)) {
-                DB_PROPERTIES.load(stream);
-            }
-        }
-        return DB_PROPERTIES;
-    }
-
     public void rollBackAndClose(Connection connection) throws SQLException {
         if (connection != null) {
             connection.rollback();
@@ -57,16 +58,18 @@ public class DBManager {
         }
     }
 
-    public void close(AutoCloseable closeable) throws SQLException, IOException {
-        if (closeable!=null){
+    public DBManager close(AutoCloseable closeable) throws SQLException, IOException {
+        if (closeable != null) {
             try {
                 closeable.close();
             } catch (Exception e) {
+                logger.error("close->" + e.getMessage());
                 if (e instanceof SQLException)
-                    throw (SQLException)e;
+                    throw (SQLException) e;
                 else
-                    throw (IOException)e;
+                    throw (IOException) e;
             }
         }
+        return instance;
     }
 }

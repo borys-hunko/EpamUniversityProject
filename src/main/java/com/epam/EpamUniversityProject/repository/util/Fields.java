@@ -9,4 +9,12 @@ public class Fields {
 
     public static final String SUBJECT_ID="id";
     public static final String SUBJECT_NAME="name";
+
+    public static final String FACULTY_ID="id";
+    public static final String FACULTY_NAME="name";
+    public static final String FACULTY_BUDGET_PLACES="budget_places";
+    public static final String FACULTY_TOTAL_PLACES="total_places";
+
+    public static final String GRADE_ID="id";
+
 }

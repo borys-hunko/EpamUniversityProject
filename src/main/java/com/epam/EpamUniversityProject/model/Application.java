@@ -2,7 +2,7 @@ package com.epam.EpamUniversityProject.model;
 
 public class Application {
     private long id;
-    private Applicant applicant;
+    private User applicant;
     private Faculty faculty;
     private int priority;
     private ApplicationStatus status;
@@ -15,11 +15,11 @@ public class Application {
         this.id = id;
     }
 
-    public Applicant getApplicant() {
+    public User getApplicant() {
         return applicant;
     }
 
-    public void setApplicant(Applicant applicant) {
+    public void setApplicant(User applicant) {
         this.applicant = applicant;
     }
 

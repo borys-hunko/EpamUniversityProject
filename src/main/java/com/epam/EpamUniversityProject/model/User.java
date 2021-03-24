@@ -1,5 +1,6 @@
 package com.epam.EpamUniversityProject.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class User {
@@ -8,7 +9,13 @@ public class User {
     private String password;
     private Role role;
     private boolean isBlocked;
-    private String locale;
+    private String firstName;
+    private String lastName;
+    private String fathersName;
+    private String region;
+    private String city;
+    private String school;
+    private List<Grade> grades;
 
     public long getId() {
         return id;
@@ -50,25 +57,60 @@ public class User {
         isBlocked = blocked;
     }
 
-    public String getLocale() {
-        return locale;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setLocale(String locale) {
-        this.locale = locale;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id && isBlocked == user.isBlocked && email.equals(user.email) && password.equals(user.password) && role == user.role;
+    public String getLastName() {
+        return lastName;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, password, role, isBlocked);
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFathersName() {
+        return fathersName;
+    }
+
+    public void setFathersName(String fathersName) {
+        this.fathersName = fathersName;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public List<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<Grade> grades) {
+        this.grades = grades;
     }
 
     @Override

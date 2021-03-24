@@ -1,7 +1,9 @@
 package com.epam.EpamUniversityProject.repository.dao.impl;
 
 import com.epam.EpamUniversityProject.model.Subject;
+import com.epam.EpamUniversityProject.model.User;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.SubjectDao;
+import com.epam.EpamUniversityProject.repository.dao.interfaces.UserDao;
 import com.epam.EpamUniversityProject.repository.util.DBManager;
 import com.epam.EpamUniversityProject.repository.util.Fields;
 import com.epam.EpamUniversityProject.repository.util.Mapper;
@@ -16,8 +18,10 @@ import java.util.List;
 
 
 public class SubjectDaoPostgresImpl implements SubjectDao {
-    private final Logger log = Logger.getLogger(SubjectDaoPostgresImpl.class);
+    private static final Logger log = Logger.getLogger(SubjectDaoPostgresImpl.class);
+    private Mapper<Subject> mapper = new SubjectMapper();
     private static final String SQL_ADD_SUBJECT = "insert into subject(name) values (?);";
+    private static final String SQL_GET_SUBJECT = "select * from subject where id=?;";
 
     @Override
     public void add(Subject item) throws IOException, SQLException {
@@ -47,7 +51,27 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
 
     @Override
     public Subject get(long id) throws IOException, SQLException {
-        return null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            connection = DBManager.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_GET_SUBJECT);
+            statement.setLong(1,id);
+            rs = statement.executeQuery();
+            Subject subject = null;
+            if (rs.next()) {
+                subject = mapper.mapRow(rs);
+            }
+            return subject;
+        } catch (SQLException | IOException e) {
+            log.error("get->" + e.getMessage());
+            throw e;
+        } finally {
+            DBManager.getInstance().close(rs)
+                    .close(statement)
+                    .close(connection);
+        }
     }
 
     @Override
@@ -65,7 +89,7 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
         return null;
     }
 
-    public class SubjectMapper implements Mapper<Subject> {
+    public static class SubjectMapper implements Mapper<Subject> {
 
         @Override
         public Subject mapRow(ResultSet resultSet) {
@@ -78,6 +102,16 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
                 log.error("mapRow->" + e.getMessage());
                 return null;
             }
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            SubjectDao dao=new SubjectDaoPostgresImpl();
+            Subject subject=dao.get(1);
+            System.out.println(subject.getName());
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

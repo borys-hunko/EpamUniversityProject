@@ -21,4 +21,12 @@ public class Subject {
         this.name = name;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
