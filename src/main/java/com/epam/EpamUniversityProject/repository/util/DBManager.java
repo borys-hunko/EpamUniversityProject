@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import java.io.*;
 import java.sql.Connection;
 
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
@@ -28,7 +29,7 @@ public class DBManager {
     }
 
 
-    public Connection getConnection() throws SQLException, IOException {
+    public Connection getConnection() throws SQLException {
         Connection connection=null;
         try {
             Context initContext = new InitialContext();
@@ -36,12 +37,18 @@ public class DBManager {
 
             DataSource ds = (DataSource)envContext.lookup("jdbc/uni");
             connection=ds.getConnection();
+            return connection;
         } catch (NamingException e) {
             e.printStackTrace();
             logger.error("Cannot obtain a connection from the pool", e);
+            return dumbGetConnection();
         }
 
-        return connection;
+    }
+
+    private Connection dumbGetConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/epam_university",
+                "postgres","pass");
     }
 
     public void commitAndClose(Connection connection) throws SQLException {
@@ -58,7 +65,7 @@ public class DBManager {
         }
     }
 
-    public DBManager close(AutoCloseable closeable) throws SQLException, IOException {
+    public DBManager close(AutoCloseable closeable) throws SQLException {
         if (closeable != null) {
             try {
                 closeable.close();
@@ -66,8 +73,6 @@ public class DBManager {
                 logger.error("close->" + e.getMessage());
                 if (e instanceof SQLException)
                     throw (SQLException) e;
-                else
-                    throw (IOException) e;
             }
         }
         return instance;
