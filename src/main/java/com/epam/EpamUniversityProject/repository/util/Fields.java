@@ -1,6 +1,6 @@
 package com.epam.EpamUniversityProject.repository.util;
 
-public class Fields {
+public final class Fields {
     public static final String USER_ID="id";
     public static final String USER_EMAIL="email";
     public static final String USER_PASSWORD="password";
@@ -23,4 +23,10 @@ public class Fields {
 
     public static final String GRADE_ID="id";
     public static final String GRADE_SCORE="score";
+
+    public static final String APPLICATION_ID="id";
+    public static final String APPLICATION_USER="user";
+    public static final String APPLICATION_FACULTY="faculty";
+    public static final String APPLICATION_PRIORITY="priority";
+    public static final String APPLICATION_STATUS="status";
 }
