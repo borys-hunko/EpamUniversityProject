@@ -18,9 +18,9 @@ import java.util.List;
 public class GradeDaoPostgresImpl implements GradeDao {
     private final GradeMapper mapper = new GradeMapper();
     private final Logger log = Logger.getLogger(GradeDaoPostgresImpl.class);
-    private static final String SQL_GET_ALL_BY_USER =
+    private static final String SQL_GET_ALL_BY_APPLICATION =
             "select grade.id,s.name,grade.score,s.id from grade" +
-                    " join subject s on grade.subject = s.id where \"user\"=?;";
+                    " join subject s on grade.subject = s.id where application=?;";
 
     @Override
     public void add(Object item) throws SQLException {
@@ -55,14 +55,14 @@ public class GradeDaoPostgresImpl implements GradeDao {
     }
 
     @Override
-    public List<Grade> getUsersGrades(long userId) throws  SQLException {
+    public List<Grade> getApplicationGrades(long userId) throws  SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         List<Grade> grades = new ArrayList<>();
         try {
             connection = DBManager.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_GET_ALL_BY_USER);
+            statement = connection.prepareStatement(SQL_GET_ALL_BY_APPLICATION);
             statement.setLong(1, userId);
             rs = statement.executeQuery();
             while (rs.next()) {
