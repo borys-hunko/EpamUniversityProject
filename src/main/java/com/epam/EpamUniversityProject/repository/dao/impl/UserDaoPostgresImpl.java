@@ -18,7 +18,7 @@ import java.util.List;
 public class UserDaoPostgresImpl implements UserDao {
     private final Logger logger = Logger.getLogger(UserDaoPostgresImpl.class);
     private final UserMapper mapper = new UserMapper();
-    private final GradeDao gradeDao = new GradeDaoPostgresImpl();
+    private final DBManager manager = DBManager.getInstance();
     private static final String SQL_ADD_USER = "insert into university_user(email, password," +
             "role, first_name, last_name," +
             "fathers_name, region, city, school)" +
@@ -36,7 +36,7 @@ public class UserDaoPostgresImpl implements UserDao {
         PreparedStatement statement = null;
         ResultSet rs = null;
         try {
-            connection = DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
             connection.setAutoCommit(false);
             statement = connection.
                     prepareStatement(SQL_ADD_USER, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -54,19 +54,19 @@ public class UserDaoPostgresImpl implements UserDao {
             statement.setString(8, item.getCity());
             statement.setString(9, item.getSchool());
             statement.execute();
-            rs=statement.getGeneratedKeys();
+            rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 item.setId(rs.getLong(Fields.USER_ID));
             }
-            DBManager.getInstance().commitAndClose(connection);
+            manager.commitAndClose(connection);
             logger.info("add() successfully added");
         } catch (SQLException e) {
-            DBManager.getInstance().rollBackAndClose(connection);
+            manager.rollBackAndClose(connection);
             logger.error("add() " + e.getMessage());
             throw e;
         } finally {
-            DBManager.getInstance().close(rs);
-            DBManager.getInstance().close(statement);
+            manager.close(rs)
+                    .close(statement);
         }
     }
 
@@ -76,7 +76,7 @@ public class UserDaoPostgresImpl implements UserDao {
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
         try {
-            connection = DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
             preparedStatement = connection.prepareStatement(SQL_READ_USER_BY_ID);
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
@@ -88,13 +88,13 @@ public class UserDaoPostgresImpl implements UserDao {
             }
             return user;
         } catch (SQLException e) {
-            DBManager.getInstance().rollBackAndClose(connection);
+            manager.rollBackAndClose(connection);
             logger.error("get() " + e.getMessage());
             throw e;
         } finally {
-            DBManager.getInstance().close(rs);
-            DBManager.getInstance().close(preparedStatement);
-            DBManager.getInstance().close(connection);
+            manager.close(rs)
+                    .close(preparedStatement)
+                    .close(connection);
         }
     }
 
@@ -106,7 +106,7 @@ public class UserDaoPostgresImpl implements UserDao {
             //update university_user 1set id=?, 2email=?, 3password=?,
             //    4is_banned=?, 5role=?, 6first_name=?, 7last_name=?,
             //    8fathers_name=?, 9region=?, 10city=?, 11school=? where 12id=?;
-            connection = DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
             statement = connection.prepareStatement(SQL_UPDATE_USER);
             statement.setString(1, newItem.getEmail());
             statement.setString(2, newItem.getPassword());
@@ -126,8 +126,8 @@ public class UserDaoPostgresImpl implements UserDao {
             logger.error("update->" + e.getMessage());
             throw e;
         } finally {
-            DBManager.getInstance().close(statement);
-            DBManager.getInstance().close(connection);
+            manager.close(statement)
+                    .close(connection);
         }
     }
 
@@ -143,7 +143,7 @@ public class UserDaoPostgresImpl implements UserDao {
         ResultSet rs = null;
         List<User> users = new ArrayList<>();
         try {
-            connection = DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
             statement = connection.createStatement();
             rs = statement.executeQuery(SQL_GET_ALL);
             while (rs.next()) {
@@ -155,7 +155,7 @@ public class UserDaoPostgresImpl implements UserDao {
             logger.error("getAll->" + e.getMessage());
             throw e;
         } finally {
-            DBManager.getInstance().close(rs)
+            manager.close(rs)
                     .close(statement)
                     .close(connection);
         }
@@ -167,7 +167,7 @@ public class UserDaoPostgresImpl implements UserDao {
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
         try {
-            connection = DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
             preparedStatement = connection.prepareStatement(SQL_READ_USER_BY_EMAIL);
             preparedStatement.setString(1, email);
             rs = preparedStatement.executeQuery();
@@ -186,9 +186,9 @@ public class UserDaoPostgresImpl implements UserDao {
             e.printStackTrace();
             throw e;
         } finally {
-            DBManager.getInstance().close(rs);
-            DBManager.getInstance().close(preparedStatement);
-            DBManager.getInstance().close(connection);
+            manager.close(rs)
+                    .close(preparedStatement)
+                    .close(connection);
         }
     }
 

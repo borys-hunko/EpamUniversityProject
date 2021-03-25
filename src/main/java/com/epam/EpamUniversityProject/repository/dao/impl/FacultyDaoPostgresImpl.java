@@ -8,15 +8,15 @@ import com.epam.EpamUniversityProject.repository.util.Fields;
 import com.epam.EpamUniversityProject.repository.util.Mapper;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FacultyDaoPostgresImpl implements FacultyDao {
-    private Logger log = Logger.getLogger(FacultyDaoPostgresImpl.class);
-    private Mapper<Faculty> facultyMapper = new FacultyMapper();
-    private Mapper<Subject> subjectMapper = new SubjectDaoPostgresImpl.SubjectMapper();
+    private final Logger log = Logger.getLogger(FacultyDaoPostgresImpl.class);
+    private final Mapper<Faculty> facultyMapper = new FacultyMapper();
+    private final Mapper<Subject> subjectMapper = new SubjectDaoPostgresImpl.SubjectMapper();
+    private final DBManager manager = DBManager.getInstance();
 
     private static final String SQL_GET_ALL_FACULTIES = "select * from faculty;";
     private static final String SQL_GET_ALL_REQUIRES_SUBJECTS = "select s.id,s.name " +
@@ -24,12 +24,12 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
             " join faculty f on f.id = rs.faculty where f.id=?;";
 
     @Override
-    public void add(Faculty item) throws  SQLException {
+    public void add(Faculty item) throws SQLException {
 
     }
 
     @Override
-    public Faculty get(long id) throws  SQLException {
+    public Faculty get(long id) throws SQLException {
         return null;
     }
 
@@ -51,7 +51,7 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
         ResultSet facsRs = null;
         List<Faculty> faculties = new ArrayList<>();
         try {
-            connection = DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
             facsStatement = connection.createStatement();
             subjsStatement = connection.prepareStatement(SQL_GET_ALL_REQUIRES_SUBJECTS);
             facsRs = facsStatement.executeQuery(SQL_GET_ALL_FACULTIES);
@@ -64,10 +64,10 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
             }
             return faculties;
         } catch (SQLException e) {
-            log.error("getAll->"+e.getMessage());
+            log.error("getAll->" + e.getMessage());
             throw e;
         } finally {
-            DBManager.getInstance().close(facsRs)
+            manager.close(facsRs)
                     .close(facsStatement)
                     .close(subjsStatement)
                     .close(connection);
@@ -88,15 +88,15 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
 
         @Override
         public Faculty mapRow(ResultSet resultSet) {
-            Faculty faculty=new Faculty();
+            Faculty faculty = new Faculty();
             try {
                 faculty.setId(resultSet.getLong(Fields.FACULTY_ID));
                 faculty.setName(resultSet.getString(Fields.FACULTY_NAME));
                 faculty.setBudgedPlaces(resultSet.getInt(Fields.FACULTY_BUDGET_PLACES));
-                faculty.setTotalPaces(resultSet.getInt(Fields.FACULTY_TOTAL_PLACES));
+                faculty.setTotalPlaces(resultSet.getInt(Fields.FACULTY_TOTAL_PLACES));
                 return faculty;
             } catch (SQLException e) {
-                log.error("mapRow->"+e.getMessage());
+                log.error("mapRow->" + e.getMessage());
                 return null;
             }
         }
@@ -104,12 +104,12 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
 
     public static void main(String[] args) {
         try {
-            FacultyDao dao=new FacultyDaoPostgresImpl();
-            List<Faculty> faculties=dao.getAll();
-            for (Faculty faculty:faculties){
+            FacultyDao dao = new FacultyDaoPostgresImpl();
+            List<Faculty> faculties = dao.getAll();
+            for (Faculty faculty : faculties) {
                 System.out.println(faculty);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

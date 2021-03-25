@@ -20,6 +20,8 @@ import java.util.List;
 public class SubjectDaoPostgresImpl implements SubjectDao {
     private static final Logger log = Logger.getLogger(SubjectDaoPostgresImpl.class);
     private Mapper<Subject> mapper = new SubjectMapper();
+    private final DBManager manager = DBManager.getInstance();
+
     private static final String SQL_ADD_SUBJECT = "insert into subject(name) values (?);";
     private static final String SQL_GET_SUBJECT = "select * from subject where id=?;";
 
@@ -29,7 +31,7 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
         PreparedStatement statement = null;
         ResultSet rs = null;
         try {
-            connection = DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(SQL_ADD_SUBJECT, PreparedStatement.RETURN_GENERATED_KEYS);
             rs = statement.executeQuery();
@@ -38,14 +40,14 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
             }
             item.setId(rs.getLong(Fields.SUBJECT_ID));
             log.info("add->item successfully added");
-            DBManager.getInstance().commitAndClose(connection);
+            manager.commitAndClose(connection);
         } catch (SQLException e) {
             log.error("add->" + e.getMessage());
-            DBManager.getInstance().rollBackAndClose(connection);
+            manager.rollBackAndClose(connection);
             throw e;
         } finally {
-            DBManager.getInstance().close(rs);
-            DBManager.getInstance().close(statement);
+            manager.close(rs)
+                    .close(statement);
         }
     }
 
@@ -55,7 +57,7 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
         PreparedStatement statement = null;
         ResultSet rs = null;
         try {
-            connection = DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
             statement = connection.prepareStatement(SQL_GET_SUBJECT);
             statement.setLong(1, id);
             rs = statement.executeQuery();
@@ -68,7 +70,7 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
             log.error("get->" + e.getMessage());
             throw e;
         } finally {
-            DBManager.getInstance().close(rs)
+            manager.close(rs)
                     .close(statement)
                     .close(connection);
         }

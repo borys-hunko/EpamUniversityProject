@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GradeDaoPostgresImpl implements GradeDao {
+    private final DBManager manager = DBManager.getInstance();
     private final GradeMapper mapper = new GradeMapper();
     private final Logger log = Logger.getLogger(GradeDaoPostgresImpl.class);
     private static final String SQL_GET_ALL_BY_APPLICATION =
@@ -28,11 +29,11 @@ public class GradeDaoPostgresImpl implements GradeDao {
     }
 
     @Override
-    public Object get(long id) throws  SQLException {
-        Connection connection=null;
-        PreparedStatement statement=null;
+    public Object get(long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            connection=DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -55,13 +56,13 @@ public class GradeDaoPostgresImpl implements GradeDao {
     }
 
     @Override
-    public List<Grade> getApplicationGrades(long userId) throws  SQLException {
+    public List<Grade> getApplicationGrades(long userId) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         List<Grade> grades = new ArrayList<>();
         try {
-            connection = DBManager.getInstance().getConnection();
+            connection = manager.getConnection();
             statement = connection.prepareStatement(SQL_GET_ALL_BY_APPLICATION);
             statement.setLong(1, userId);
             rs = statement.executeQuery();
@@ -70,11 +71,10 @@ public class GradeDaoPostgresImpl implements GradeDao {
             }
             log.info("getUsersGrades->success");
         } catch (SQLException e) {
-            log.error("getUsersGrades",e);
+            log.error("getUsersGrades", e);
             throw e;
         } finally {
-            DBManager.getInstance()
-                    .close(rs)
+            manager.close(rs)
                     .close(statement)
                     .close(connection);
         }
@@ -94,7 +94,7 @@ public class GradeDaoPostgresImpl implements GradeDao {
                         .SubjectMapper().mapRow(resultSet);
                 grade.setSubject(subject);
             } catch (SQLException e) {
-                log.error("mapRow",e);
+                log.error("mapRow", e);
             }
             return grade;
         }
