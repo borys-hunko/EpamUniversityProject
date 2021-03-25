@@ -16,7 +16,6 @@ public class User implements Serializable {
     private String region;
     private String city;
     private String school;
-    private List<Grade> grades;
 
     public long getId() {
         return id;
@@ -117,15 +116,6 @@ public class User implements Serializable {
         return this;
     }
 
-    public List<Grade> getGrades() {
-        return grades;
-    }
-
-    public User setGrades(List<Grade> grades) {
-        this.grades = grades;
-        return this;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -140,7 +130,6 @@ public class User implements Serializable {
                 ", region='" + region + '\'' +
                 ", city='" + city + '\'' +
                 ", school='" + school + '\'' +
-                ", grades=" + grades +
                 '}';
     }
 }
