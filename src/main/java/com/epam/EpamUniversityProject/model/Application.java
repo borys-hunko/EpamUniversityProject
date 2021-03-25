@@ -1,11 +1,14 @@
 package com.epam.EpamUniversityProject.model;
 
+import java.util.List;
+
 public class Application {
     private long id;
     private User applicant;
     private Faculty faculty;
     private int priority;
     private ApplicationStatus status;
+    private List<Grade> grades;
 
     public long getId() {
         return id;
@@ -45,5 +48,13 @@ public class Application {
 
     public void setStatus(ApplicationStatus status) {
         this.status = status;
+    }
+
+    public List<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<Grade> grades) {
+        this.grades = grades;
     }
 }
