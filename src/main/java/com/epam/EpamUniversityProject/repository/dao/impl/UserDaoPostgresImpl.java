@@ -19,12 +19,15 @@ public class UserDaoPostgresImpl implements UserDao {
     private final Logger logger = Logger.getLogger(UserDaoPostgresImpl.class);
     private final UserMapper mapper = new UserMapper();
     private final GradeDao gradeDao = new GradeDaoPostgresImpl();
-    private static final String SQL_ADD_USER = "insert into university_user(email, password, role)" +
-            "values (?, ?, ?);";
+    private static final String SQL_ADD_USER = "insert into university_user(email, password," +
+            "role, first_name, last_name," +
+            "fathers_name, region, city, school)" +
+            "values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String SQL_READ_USER_BY_ID = "select * from university_user where id=?;";
     private static final String SQL_READ_USER_BY_EMAIL = "select * from university_user where email=?;";
-    private static final String SQL_UPDATE_USER = "update university_user set" +
-            " email=?,password=?,is_banned=?,role=? where id=?;";
+    private static final String SQL_UPDATE_USER = "update university_user set id=?, email=?, password=?," +
+            "    is_banned=?, role=?, first_name=?, last_name=?," +
+            "    fathers_name=?, region=?, city=?, school=? where id=?;";
     private static final String SQL_GET_ALL = "select * from university_user;";
 
     @Override
@@ -37,10 +40,21 @@ public class UserDaoPostgresImpl implements UserDao {
             connection.setAutoCommit(false);
             statement = connection.
                     prepareStatement(SQL_ADD_USER, PreparedStatement.RETURN_GENERATED_KEYS);
+            //insert into university_user(email, password,
+            //                              , role, first_name, last_name,
+            //                            fathers_name, region, city, school)
+            //values (?, ?, ?, ?, ?, ?, ?, ?);
             statement.setString(1, item.getEmail());
             statement.setString(2, item.getPassword());
             statement.setString(3, item.getRole().toString());
-            rs = statement.executeQuery();
+            statement.setString(4, item.getFirstName());
+            statement.setString(5, item.getLastName());
+            statement.setString(6, item.getFathersName());
+            statement.setString(7, item.getRegion());
+            statement.setString(8, item.getCity());
+            statement.setString(9, item.getSchool());
+            statement.execute();
+            rs=statement.getGeneratedKeys();
             if (rs.next()) {
                 item.setId(rs.getLong(Fields.USER_ID));
             }
@@ -70,11 +84,7 @@ public class UserDaoPostgresImpl implements UserDao {
             if (rs.next()) {
                 user = mapper.mapRow(rs);
             } else {
-                logger.info("no such element");
-            }
-            if (user!=null){
-                List<Grade> grades = gradeDao.getUsersGrades(user.getId());
-                user.setGrades(grades);
+                logger.info("get() no such element");
             }
             return user;
         } catch (SQLException e) {
@@ -93,12 +103,24 @@ public class UserDaoPostgresImpl implements UserDao {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
+            //update university_user 1set id=?, 2email=?, 3password=?,
+            //    4is_banned=?, 5role=?, 6first_name=?, 7last_name=?,
+            //    8fathers_name=?, 9region=?, 10city=?, 11school=? where 12id=?;
             connection = DBManager.getInstance().getConnection();
             statement = connection.prepareStatement(SQL_UPDATE_USER);
             statement.setString(1, newItem.getEmail());
             statement.setString(2, newItem.getPassword());
             statement.setString(3, newItem.getRole().toString());
-            statement.setLong(4, newItem.getId());
+            statement.setBoolean(4, newItem.isBlocked());
+            statement.setObject(5, newItem.getRole());
+            statement.setString(6, newItem.getFirstName());
+            statement.setString(7, newItem.getLastName());
+            statement.setString(8, newItem.getFathersName());
+            statement.setString(9, newItem.getRegion());
+            statement.setString(10, newItem.getCity());
+            statement.setString(11, newItem.getSchool());
+            statement.setLong(12, newItem.getId());
+            statement.executeUpdate();
             logger.info("item successfully updated");
         } catch (SQLException e) {
             logger.error("update->" + e.getMessage());
@@ -126,7 +148,6 @@ public class UserDaoPostgresImpl implements UserDao {
             rs = statement.executeQuery(SQL_GET_ALL);
             while (rs.next()) {
                 User user = mapper.mapRow(rs);
-                user.setGrades(gradeDao.getUsersGrades(user.getId()));
                 users.add(user);
             }
             return users;
