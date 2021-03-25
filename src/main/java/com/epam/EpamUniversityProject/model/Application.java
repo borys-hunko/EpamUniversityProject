@@ -14,47 +14,53 @@ public class Application {
         return id;
     }
 
-    public void setId(long id) {
+    public Application setId(long id) {
         this.id = id;
+        return this;
     }
 
     public User getApplicant() {
         return applicant;
     }
 
-    public void setApplicant(User applicant) {
+    public Application setApplicant(User applicant) {
         this.applicant = applicant;
+        return this;
     }
 
     public Faculty getFaculty() {
         return faculty;
     }
 
-    public void setFaculty(Faculty faculty) {
+    public Application setFaculty(Faculty faculty) {
         this.faculty = faculty;
+        return this;
     }
 
     public int getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public Application setPriority(int priority) {
         this.priority = priority;
+        return this;
     }
 
     public ApplicationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ApplicationStatus status) {
+    public Application setStatus(ApplicationStatus status) {
         this.status = status;
+        return this;
     }
 
     public List<Grade> getGrades() {
         return grades;
     }
 
-    public void setGrades(List<Grade> grades) {
+    public Application setGrades(List<Grade> grades) {
         this.grades = grades;
+        return this;
     }
 }
