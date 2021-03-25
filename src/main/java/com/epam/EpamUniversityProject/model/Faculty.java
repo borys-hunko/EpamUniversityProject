@@ -6,7 +6,7 @@ public class Faculty {
     private long id;
     private String name;
     private int budgedPlaces;
-    private int totalPaces;
+    private int totalPlaces;
     private List<Subject> requiredSubjects;
 
     public long getId() {
@@ -36,12 +36,12 @@ public class Faculty {
         return this;
     }
 
-    public int getTotalPaces() {
-        return totalPaces;
+    public int getTotalPlaces() {
+        return totalPlaces;
     }
 
-    public Faculty setTotalPaces(int totalPaces) {
-        this.totalPaces = totalPaces;
+    public Faculty setTotalPlaces(int totalPlaces) {
+        this.totalPlaces = totalPlaces;
         return this;
     }
 
@@ -59,7 +59,7 @@ public class Faculty {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", budgedPlaces=" + budgedPlaces +
-                ", totalPaces=" + totalPaces +
+                ", totalPaces=" + totalPlaces +
                 ", requiredSubjects=" + requiredSubjects +
                 '}';
     }
