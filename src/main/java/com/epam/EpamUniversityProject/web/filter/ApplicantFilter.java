@@ -24,8 +24,8 @@ public class ApplicantFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session=request.getSession();
-        Role role= (Role) session.getAttribute("role");
-        if (!Role.APPLICANT.equals(role)){
+        String role= (String) session.getAttribute("role");
+        if (!Role.APPLICANT.toString().equals(role)){
             request.setAttribute("errorMsg","You have no access.\nLog in as user");
             request.getServletContext().getRequestDispatcher(Paths.PAGE_ERROR).forward(request,response);
         }else {

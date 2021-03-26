@@ -23,8 +23,8 @@ public class AdminFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session=request.getSession();
-        Role role= (Role) session.getAttribute("role");
-        if (!Role.ADMIN.equals(role)){
+        String role= (String) session.getAttribute("role");
+        if (!Role.ADMIN.toString().equals(role)){
             request.setAttribute("errorMsg","You have no access.\nLog in as admin");
             request.getServletContext().getRequestDispatcher(Paths.PAGE_ERROR).forward(request,response);
         }else {
