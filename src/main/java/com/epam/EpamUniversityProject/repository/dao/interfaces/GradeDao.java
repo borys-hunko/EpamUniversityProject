@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface GradeDao extends Dao{
+public interface GradeDao extends Dao<Grade>{
     List<Grade> getApplicationGrades(long id) throws SQLException;
 }
 

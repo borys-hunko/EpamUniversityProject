@@ -18,6 +18,11 @@
                             <td>${faculty.name}</td>
                             <td>${faculty.budgedPlaces}</td>
                             <td>${faculty.totalPlaces}</td>
+                            <td>
+                                <a href="<c:url value="/apply?facId=${faculty.id}"/>">
+                                    <button>apply</button>
+                                </a>
+                            </td>
                         </tr>
                 </c:forEach>
             </table>

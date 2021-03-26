@@ -24,12 +24,12 @@ public class GradeDaoPostgresImpl implements GradeDao {
                     " join subject s on grade.subject = s.id where application=?;";
 
     @Override
-    public void add(Object item) throws SQLException {
+    public void add(Grade item) throws SQLException {
 
     }
 
     @Override
-    public Object get(long id) throws SQLException {
+    public Grade get(long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -41,7 +41,7 @@ public class GradeDaoPostgresImpl implements GradeDao {
     }
 
     @Override
-    public void update(Object newItem) throws SQLException {
+    public void update(Grade newItem) throws SQLException {
 
     }
 

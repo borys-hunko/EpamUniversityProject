@@ -4,25 +4,27 @@
     <title>Login</title>
     <meta charset="UTF-8">
 </head>
+ZX<body>
 <span>Sign up</span>
 <span><%=(request.getAttribute("error") == null) ? "" : request.getAttribute("error")%></span>
 <form action="<%=request.getContextPath()%>/signUp" method="post">
     <label for="email">email</label>
-    <input type="email" name="email" id="email" placeholder="Enter email"><br>
+    <input id="email" name="email" placeholder="Enter email" type="email"><br>
     <label for="password">password</label>
-    <input type="password" name="password" id="password" placeholder="password"><br>
+    <input id="password" name="password" placeholder="password" type="password"><br>
     <label for="firstName">first name</label>
-    <input type="text" name="firstName" id="firstName"><br>
+    <input id="firstName" name="firstName" type="text"><br>
     <label for="lastName">second name</label>
-    <input type="text" name="lastName" id="lastName"><br>
+    <input id="lastName" name="lastName" type="text"><br>
     <label for="fathersName">fathers name</label>
-    <input type="text" name="fathersName" id="fathersName"><br>
+    <input id="fathersName" name="fathersName" type="text"><br>
     <label for="region">region</label>
-    <input type="text" name="region" id="region"><br>
+    <input id="region" name="region" type="text"><br>
     <label for="city">city</label>
-    <input type="text" name="city" id="city"><br>
+    <input id="city" name="city" type="text"><br>
     <label for="school">school</label>
-    <input type="text" name="school" id="school"><br>
+    <input id="school" name="school" type="text"><br>
     <input type="submit">
 </form>
+</body>
 </html>

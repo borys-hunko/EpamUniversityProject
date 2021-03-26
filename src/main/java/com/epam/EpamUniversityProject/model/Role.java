@@ -1,5 +1,7 @@
 package com.epam.EpamUniversityProject.model;
 
-public enum Role {
+import java.io.Serializable;
+
+public enum Role implements Serializable {
     APPLICANT,ADMIN
 }
