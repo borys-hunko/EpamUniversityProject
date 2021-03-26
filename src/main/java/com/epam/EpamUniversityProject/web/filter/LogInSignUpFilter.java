@@ -2,6 +2,8 @@ package com.epam.EpamUniversityProject.web.filter;
 
 
 import com.epam.EpamUniversityProject.model.Role;
+import com.epam.EpamUniversityProject.model.User;
+import com.epam.EpamUniversityProject.repository.dao.interfaces.UserDao;
 import com.epam.EpamUniversityProject.web.utils.Paths;
 
 import javax.servlet.*;
@@ -17,10 +19,11 @@ import java.io.IOException;
  **/
 
 @WebFilter(value = {Paths.URL_SIGN_UP, Paths.URL_ADMIN})
-public class AuthFilter implements Filter {
+public class LogInSignUpFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+
     }
 
     @Override
@@ -28,12 +31,12 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
+        User user= (User) session.getAttribute("user");
         if (session.getAttribute("user") != null) {
-            String role = (String) session.getAttribute("role");
-            if (role.equals(Role.APPLICANT.toString())) {
-                response.sendRedirect(Paths.URL_APPLICANT_HOME);
-            } else {
+            if (Role.ADMIN.equals(user.getRole())){
                 response.sendRedirect(Paths.URL_ADMIN_HOME);
+            } else {
+                response.sendRedirect(Paths.URL_APPLICANT_HOME);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);
