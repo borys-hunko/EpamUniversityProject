@@ -18,7 +18,7 @@ import java.sql.SQLException;
 
 @WebServlet(Paths.URL_SIGN_UP)
 public class SignUpServlet extends HttpServlet {
-    private final Logger log=Logger.getLogger(SignUpServlet.class);
+    private final Logger log = Logger.getLogger(SignUpServlet.class);
     private UserDao dao;
 
     @Override
@@ -73,11 +73,13 @@ public class SignUpServlet extends HttpServlet {
                     .setSchool(school);
             dao.add(user);
             HttpSession session = req.getSession();
-            session.setAttribute("user", user.getId());
-            session.setAttribute("role", user.getRole());
+            session.setAttribute("user", user);
             resp.sendRedirect(Paths.URL_APPLICANT_HOME);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("doPost->", e);
+            req.getServletContext()
+                    .getRequestDispatcher(Paths.PAGE_ERROR)
+                    .forward(req, resp);
         }
     }
 }

@@ -40,15 +40,14 @@ public class LogInServlet extends HttpServlet {
             String password = req.getParameter("password");
             User user = dao.getByEmail(email);
             String errorMsg = "";
-            if (user == null || !user.getPassword().equals(password)||user.isBlocked()) {
+            if (user == null || !user.getPassword().equals(password)) {
                 errorMsg = "incorrect email/password";
                 req.setAttribute("error", errorMsg);
                 doGet(req, resp);
             } else {
                 HttpSession session = req.getSession();
-                session.setAttribute("user", user.getId());
+                session.setAttribute("user", user);
                 String path;
-                session.setAttribute("role",user.getRole());
                 if (user.getRole().equals(Role.ADMIN)){
                     path= Paths.URL_ADMIN_HOME;
                 }else {
