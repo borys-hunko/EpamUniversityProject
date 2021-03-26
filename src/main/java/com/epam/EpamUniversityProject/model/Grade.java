@@ -28,4 +28,13 @@ public class Grade {
     public void setScore(int score) {
         this.score = score;
     }
+
+    @Override
+    public String toString() {
+        return "Grade{" +
+                "id=" + id +
+                ", subject=" + subject +
+                ", score=" + score +
+                '}';
+    }
 }

@@ -63,4 +63,16 @@ public class Application {
         this.grades = grades;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Application{" +
+                "id=" + id +
+                ", applicant=" + applicant +
+                ", faculty=" + faculty +
+                ", priority=" + priority +
+                ", status=" + status +
+                ", grades=" + grades +
+                '}';
+    }
 }
