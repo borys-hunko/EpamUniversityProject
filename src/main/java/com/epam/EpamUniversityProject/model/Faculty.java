@@ -1,6 +1,7 @@
 package com.epam.EpamUniversityProject.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Faculty {
     private long id;
@@ -62,5 +63,22 @@ public class Faculty {
                 ", totalPaces=" + totalPlaces +
                 ", requiredSubjects=" + requiredSubjects +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Faculty faculty = (Faculty) o;
+        return id == faculty.id
+                && budgedPlaces == faculty.budgedPlaces
+                && totalPlaces == faculty.totalPlaces
+                && Objects.equals(name, faculty.name)
+                && Objects.equals(requiredSubjects, faculty.requiredSubjects);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, budgedPlaces, totalPlaces, requiredSubjects);
     }
 }
