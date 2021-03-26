@@ -18,4 +18,5 @@ public final class Paths {
     public static final String URL_ADMIN="/admin/*";
     public static final String URL_ADMIN_NONE="/admin";
     public static final String URL_ADMIN_HOME="/admin/home";
+    public static final String ROOT = "/*";
 }
