@@ -19,9 +19,16 @@
                             <td>${faculty.budgedPlaces}</td>
                             <td>${faculty.totalPlaces}</td>
                             <td>
-                                <a href="<c:url value="/apply?facId=${faculty.id}"/>">
+                            <c:choose>
+                                <c:when test = "${applied.contains(faculty)}">
+                                    <p><b>applied</b></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="<c:url value="/apply?facId=${faculty.id}"/>">
                                     <button>apply</button>
-                                </a>
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
                             </td>
                         </tr>
                 </c:forEach>
