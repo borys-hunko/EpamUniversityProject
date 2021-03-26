@@ -39,7 +39,6 @@ public class DBManager {
             connection=ds.getConnection();
             return connection;
         } catch (NamingException e) {
-            e.printStackTrace();
             logger.error("Cannot obtain a connection from the pool", e);
             return dumbGetConnection();
         }
