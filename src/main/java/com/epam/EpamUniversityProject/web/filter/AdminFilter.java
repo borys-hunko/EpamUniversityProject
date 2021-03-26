@@ -1,6 +1,7 @@
 package com.epam.EpamUniversityProject.web.filter;
 
 import com.epam.EpamUniversityProject.model.Role;
+import com.epam.EpamUniversityProject.model.User;
 import com.epam.EpamUniversityProject.web.utils.Paths;
 
 import javax.servlet.*;
@@ -23,8 +24,9 @@ public class AdminFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session=request.getSession();
-        String role= (String) session.getAttribute("role");
-        if (!Role.ADMIN.toString().equals(role)){
+        User user= (User) session.getAttribute("user");
+
+        if (!Role.ADMIN.equals(user.getRole())){
             request.setAttribute("errorMsg","You have no access.\nLog in as admin");
             request.getServletContext().getRequestDispatcher(Paths.PAGE_ERROR).forward(request,response);
         }else {
