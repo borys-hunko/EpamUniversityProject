@@ -18,6 +18,11 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
     private final Mapper<Subject> subjectMapper = new SubjectDaoPostgresImpl.SubjectMapper();
     private final DBManager manager = DBManager.getInstance();
 
+    private static final String SQL_GET_FACULTY = "select * from faculty where id=?;";
+    private static final String SQL_GET_REQUIRED_SUBJECTS =
+            "select * from subject s " +
+                    "join required_subjects rs on s.id = rs.subject " +
+                    "join faculty f on f.id = rs.faculty where faculty=?;";
     private static final String SQL_GET_ALL_FACULTIES = "select * from faculty;";
     private static final String SQL_GET_ALL_REQUIRES_SUBJECTS = "select s.id,s.name " +
             "from subject s join required_subjects rs on s.id = rs.subject" +
@@ -30,7 +35,35 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
 
     @Override
     public Faculty get(long id) throws SQLException {
-        return null;
+        Connection connection = null;
+        PreparedStatement facsStatement = null;
+        PreparedStatement subjsStatement = null;
+        ResultSet facsRs = null;
+        try {
+            connection = manager.getConnection();
+            log.info("get: connected");
+            facsStatement = connection.prepareStatement(SQL_GET_FACULTY);
+            subjsStatement = connection.prepareStatement(SQL_GET_REQUIRED_SUBJECTS);
+            facsStatement.setLong(1, id);
+            subjsStatement.setLong(1, id);
+            facsRs = facsStatement.executeQuery();
+            facsRs.next();
+            Faculty faculty = facultyMapper.mapRow(facsRs);
+            log.info("get: faculty retrieved");
+            List<Subject> requiredSubjects = getRequiredSubjects(subjsStatement);
+            log.info("get: required subjects retrieved");
+            faculty.setRequiredSubjects(requiredSubjects);
+            return faculty;
+        } catch (SQLException e) {
+            log.error("get: ", e);
+            manager.rollBackAndClose(connection);
+            throw e;
+        } finally {
+            manager.close(facsRs)
+                    .close(subjsStatement)
+                    .close(facsStatement)
+                    .close(connection);
+        }
     }
 
     @Override
