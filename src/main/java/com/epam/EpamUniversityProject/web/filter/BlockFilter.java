@@ -37,7 +37,7 @@ public class BlockFilter implements Filter {
             //because he an be blocked during session
             User checkUser = dao.get(user.getId());
             log.info("doFilter: retrieve user from db");
-            if (user.isBlocked()) {
+            if (checkUser.isBlocked()) {
                 log.info("doFilter: user is blocked");
                 request.setAttribute("errorMsg", "you are blocked");
                 request.getServletContext()
