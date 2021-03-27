@@ -23,15 +23,15 @@ public class AdminFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpSession session=request.getSession();
-        User user= (User) session.getAttribute("user");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
-        if (!Role.ADMIN.equals(user.getRole())){
-            request.setAttribute("errorMsg","You have no access.\nLog in as admin");
-            request.getServletContext().getRequestDispatcher(Paths.PAGE_ERROR).forward(request,response);
-        }else {
-            filterChain.doFilter(servletRequest,servletResponse);
+        if (!Role.ADMIN.equals(user.getRole())) {
+            request.setAttribute("errorMsg", "You have no access.\nLog in as admin");
+            request.getServletContext().getRequestDispatcher(Paths.PAGE_ERROR).forward(request, response);
         }
+        filterChain.doFilter(servletRequest, servletResponse);
+
     }
 
     @Override
