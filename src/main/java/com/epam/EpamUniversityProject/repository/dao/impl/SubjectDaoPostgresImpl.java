@@ -10,10 +10,8 @@ import com.epam.EpamUniversityProject.repository.util.Mapper;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,6 +22,7 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
 
     private static final String SQL_ADD_SUBJECT = "insert into subject(name) values (?);";
     private static final String SQL_GET_SUBJECT = "select * from subject where id=?;";
+    private static final String SQL_GET_ALL = "select * from subject;";
 
     @Override
     public void add(Subject item) throws SQLException {
@@ -88,11 +87,30 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
 
     @Override
     public List<Subject> getAll() throws SQLException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        List<Subject> subjects = new ArrayList<>();
+        try {
+            connection = manager.getConnection();
+            statement = connection.createStatement();
+            rs = statement.executeQuery(SQL_GET_ALL);
+            log.info("getAll: retrieved all subjects");
+            while (rs.next()) {
+                subjects.add(mapper.mapRow(rs));
+            }
+            return subjects;
+        } catch (SQLException e) {
+            log.error("getConnection:", e);
+            throw e;
+        } finally {
+            manager.close(rs)
+                    .close(statement)
+                    .close(connection);
+        }
     }
 
     public static class SubjectMapper implements Mapper<Subject> {
-
         @Override
         public Subject mapRow(ResultSet resultSet) {
             Subject subject = new Subject();
