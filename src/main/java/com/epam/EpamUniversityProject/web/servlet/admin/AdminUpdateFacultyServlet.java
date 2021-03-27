@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(Paths.URL_ADMIN_UPDATE_FACULTY)
-public class AdminUpdateFaculty extends HttpServlet {
-    private final Logger log = Logger.getLogger(AdminUpdateFaculty.class);
+public class AdminUpdateFacultyServlet extends HttpServlet {
+    private final Logger log = Logger.getLogger(AdminUpdateFacultyServlet.class);
     private FacultyDao facultyDao;
     private SubjectDao subjectDao;
     private long facultyId;
