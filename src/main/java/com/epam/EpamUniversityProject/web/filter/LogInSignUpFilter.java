@@ -18,7 +18,7 @@ import java.io.IOException;
  * check if user log in
  **/
 
-@WebFilter(value = {Paths.URL_SIGN_UP, Paths.URL_ADMIN})
+@WebFilter(value = {Paths.URL_SIGN_UP, Paths.URL_LOG_IN})
 public class LogInSignUpFilter implements Filter {
 
     @Override
