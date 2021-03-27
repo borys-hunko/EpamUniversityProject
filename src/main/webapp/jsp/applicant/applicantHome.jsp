@@ -24,7 +24,7 @@
                                     <p><b>applied</b></p>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="<c:url value="/apply?facId=${faculty.id}"/>">
+                                    <a href="<c:url value="/applicant/apply?facId=${faculty.id}"/>">
                                     <button>apply</button>
                                     </a>
                                 </c:otherwise>
