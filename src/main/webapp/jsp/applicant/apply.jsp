@@ -8,16 +8,14 @@
 </head>
 <body>
 <span>Sign up</span>
-<span><%=(request.getAttribute("error") == null) ? "" : request.getAttribute("error")%></span>
-<form action="<c:url value="/apply"/>" method="post">
+<span color="red"><%=(request.getAttribute("error") == null) ? "" : request.getAttribute("error")%></span>
+<form action="<c:url value="/applicant/apply"/>" method="post">
     <label for="priority">priority</label>
     <input type="number" name="priority" id="priority"><br>
-    <label for="subj1">${faculty.requiredSubjects.get(0)}</label>
-    <input type="number" name="subj1" id="subj1"><br>
-    <label for="subj2">${faculty.requiredSubjects.get(1)}</label>
-    <input type="number" name="subj2" id="subj2"><br>
-    <label for="subj3">${faculty.requiredSubjects.get(2)}</label>
-    <input type="number" name="subj3" id="subj3"><br>
+    <c:forEach items="${faculty.requiredSubjects}" var="subject">
+        <label>${subject.name}</label>
+        <input type="number" name="results"/>
+    </c:forEach>
     <input type="submit">
 </form>
 </body>
