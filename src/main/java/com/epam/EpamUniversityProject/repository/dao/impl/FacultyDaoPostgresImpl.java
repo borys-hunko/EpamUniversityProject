@@ -33,6 +33,7 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
             " join faculty f on f.id = rs.faculty where f.id=?;";
     private final static String SQL_UPDATE_FACULTY =
             "update faculty set name=?,budget_places=?,total_places=? where id=?;";
+    private static final String SQL_DELETE_FACULTY="delete from faculty where id=?;";
     private static final String SQL_DELETE_REQUIRED_SUBJECTS =
             "delete from required_subjects where faculty=?;";
 
@@ -163,8 +164,26 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
     }
 
     @Override
-    public void delete(long id) {
-
+    public void delete(long id) throws SQLException {
+        Connection connection=null;
+        PreparedStatement statement=null;
+        try {
+            connection=manager.getConnection();
+            connection.setAutoCommit(false);
+            statement=connection.prepareStatement(SQL_DELETE_FACULTY);
+            statement.setLong(1,id);
+            if (statement.executeUpdate()==0){
+                throw new SQLException("item wasn't deleted");
+            }
+            manager.commitAndClose(connection);
+            log.info("delete: success");
+        } catch (SQLException e) {
+            log.error("delete:",e);
+            manager.rollBackAndClose(connection);
+            throw e;
+        }finally {
+            manager.close(statement);
+        }
     }
 
     @Override
