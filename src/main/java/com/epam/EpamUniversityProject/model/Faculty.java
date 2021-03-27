@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Faculty {
     private long id;
     private String name;
-    private int budgedPlaces;
+    private int budgetPlaces;
     private int totalPlaces;
     private List<Subject> requiredSubjects;
 
@@ -28,12 +28,12 @@ public class Faculty {
         return this;
     }
 
-    public int getBudgedPlaces() {
-        return budgedPlaces;
+    public int getBudgetPlaces() {
+        return budgetPlaces;
     }
 
-    public Faculty setBudgedPlaces(int budgedPlaces) {
-        this.budgedPlaces = budgedPlaces;
+    public Faculty setBudgetPlaces(int budgetPlaces) {
+        this.budgetPlaces = budgetPlaces;
         return this;
     }
 
@@ -50,8 +50,9 @@ public class Faculty {
         return requiredSubjects;
     }
 
-    public void setRequiredSubjects(List<Subject> requiredSubjects) {
+    public Faculty setRequiredSubjects(List<Subject> requiredSubjects) {
         this.requiredSubjects = requiredSubjects;
+        return this;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class Faculty {
         return "Faculty{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", budgedPlaces=" + budgedPlaces +
+                ", budgedPlaces=" + budgetPlaces +
                 ", totalPaces=" + totalPlaces +
                 ", requiredSubjects=" + requiredSubjects +
                 '}';
@@ -71,7 +72,7 @@ public class Faculty {
         if (o == null || getClass() != o.getClass()) return false;
         Faculty faculty = (Faculty) o;
         return id == faculty.id
-                && budgedPlaces == faculty.budgedPlaces
+                && budgetPlaces == faculty.budgetPlaces
                 && totalPlaces == faculty.totalPlaces
                 && Objects.equals(name, faculty.name)
                 && Objects.equals(requiredSubjects, faculty.requiredSubjects);
@@ -79,6 +80,6 @@ public class Faculty {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, budgedPlaces, totalPlaces, requiredSubjects);
+        return Objects.hash(id, name, budgetPlaces, totalPlaces, requiredSubjects);
     }
 }

@@ -19,10 +19,10 @@
             <tr>
                 <td>${faculty.id}</td>
                 <td>${faculty.name}</td>
-                <td>${faculty.budgedPlaces}</td>
+                <td>${faculty.budgetPlaces}</td>
                 <td>${faculty.totalPlaces}</td>
                 <td>
-                    <a href="<c:url value="/admin/faculties/edit?id=${faculty.id}" />">
+                    <a href="<c:url value="/admin/faculties/update?id=${faculty.id}" />">
                         <button>edit</button>
                     </a>
                 <td>
