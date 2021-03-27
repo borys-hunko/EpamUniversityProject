@@ -13,7 +13,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-
 public class DBManager {
     private static final Logger logger = Logger.getLogger(DBManager.class);
     private static DBManager instance;
@@ -30,13 +29,15 @@ public class DBManager {
 
 
     public Connection getConnection() throws SQLException {
-        Connection connection=null;
+        Connection connection = null;
         try {
+            logger.info("getConnection: get context");
             Context initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup("java:/comp/env");
-
-            DataSource ds = (DataSource)envContext.lookup("jdbc/uni");
-            connection=ds.getConnection();
+            logger.info("getConnection: set data source");
+            DataSource ds = (DataSource) envContext.lookup("jdbc/uni");
+            connection = ds.getConnection();
+            logger.info("getConnection: connection has been established");
             return connection;
         } catch (NamingException e) {
             logger.error("Cannot obtain a connection from the pool", e);
@@ -47,7 +48,7 @@ public class DBManager {
 
     private Connection dumbGetConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/epam_university",
-                "postgres","pass");
+                "postgres", "pass");
     }
 
     public void commitAndClose(Connection connection) throws SQLException {

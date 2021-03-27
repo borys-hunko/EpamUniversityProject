@@ -1,6 +1,5 @@
 package com.epam.EpamUniversityProject.repository.dao.interfaces;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
