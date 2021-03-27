@@ -7,8 +7,12 @@ public final class Paths {
     public static final String PAGE_APPLICANT_HOME ="/jsp/applicant/applicantHome.jsp";
     public static final String PAGE_APPLICANT_APPLY="/jsp/applicant/apply.jsp";
     public static final String PAGE_ADMIN_HOME="/jsp/admin/adminHome.jsp";
+    public static final String PAGE_ADMIN_FACULTIES="/jsp/admin/faculties.jsp";
+    public static final String PAGE_ADMIN_USERS="/jsp/admin/faculties.jsp";
+
     public static final String URL_ERROR="/error";
     public static final String URL_NONE="/";
+    public static final String ROOT = "/*";
     public static final String URL_LOG_IN = "/logIn";
     public static final String URL_SIGN_UP="/signUp";
     public static final String URL_APPLICANT="/applicant/*";
@@ -18,5 +22,6 @@ public final class Paths {
     public static final String URL_ADMIN="/admin/*";
     public static final String URL_ADMIN_NONE="/admin";
     public static final String URL_ADMIN_HOME="/admin/home";
-    public static final String ROOT = "/*";
+    public static final String URL_ADMIN_FACULTIES="/admin/faculties";
+    public static final String URL_ADMIN_USERS="/admin/users";
 }
