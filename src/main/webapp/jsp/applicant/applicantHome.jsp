@@ -18,7 +18,7 @@
                 <c:forEach items="${faculties}" var="faculty">
                         <tr>
                             <td>${faculty.name}</td>
-                            <td>${faculty.budgedPlaces}</td>
+                            <td>${faculty.budgetPlaces}</td>
                             <td>${faculty.totalPlaces}</td>
                             <td>
                             <c:choose>
