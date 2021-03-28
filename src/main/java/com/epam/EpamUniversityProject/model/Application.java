@@ -8,6 +8,7 @@ public class Application {
     private Faculty faculty;
     private int priority;
     private ApplicationStatus status;
+    private TypeOfEducation typeOfEducation;
     private List<Grade> grades;
 
     public long getId() {
@@ -64,6 +65,15 @@ public class Application {
         return this;
     }
 
+    public TypeOfEducation getTypeOfEducation() {
+        return typeOfEducation;
+    }
+
+    public Application setTypeOfEducation(TypeOfEducation typeOfEducation) {
+        this.typeOfEducation = typeOfEducation;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Application{" +
@@ -72,6 +82,7 @@ public class Application {
                 ", faculty=" + faculty +
                 ", priority=" + priority +
                 ", status=" + status +
+                ", typeOfEducation=" + typeOfEducation +
                 ", grades=" + grades +
                 '}';
     }
