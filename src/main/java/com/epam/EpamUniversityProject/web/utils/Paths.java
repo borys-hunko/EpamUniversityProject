@@ -8,7 +8,9 @@ public final class Paths {
     public static final String PAGE_APPLICANT_APPLY="/jsp/applicant/apply.jsp";
     public static final String PAGE_ADMIN_HOME="/jsp/admin/adminHome.jsp";
     public static final String PAGE_ADMIN_FACULTIES="/jsp/admin/faculties.jsp";
-    public static final String PAGE_ADMIN_USERS="/jsp/admin/faculties.jsp";
+    public static final String PAGE_ADMIN_USERS="/jsp/admin/users.jsp";
+    public static final String PAGE_ADMIN_ADD_FACULTY = "/jsp/admin/addFaclty.jsp";
+    public static final String PAGE_ADMIN_UPDATE_FACULTY = "/jsp/admin/updateFaculty.jsp";
 
     public static final String URL_ERROR="/error";
     public static final String URL_NONE="/";
@@ -23,5 +25,9 @@ public final class Paths {
     public static final String URL_ADMIN_NONE="/admin";
     public static final String URL_ADMIN_HOME="/admin/home";
     public static final String URL_ADMIN_FACULTIES="/admin/faculties";
+    public static final String URL_ADMIN_ADD_FACULTY = "/admin/faculties/add";
+    public static final String URL_ADMIN_UPDATE_FACULTY = "/admin/faculties/update";
+    public static final String URL_ADMIN_DELETE_FACULTY = "/admin/faculties/delete";
     public static final String URL_ADMIN_USERS="/admin/users";
+    public static final String URL_ADMIN_SET_BLOCKED_FOR_USER = "/admin/users/setBlocked";
 }
