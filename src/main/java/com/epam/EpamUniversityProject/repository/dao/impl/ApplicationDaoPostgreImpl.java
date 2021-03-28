@@ -25,7 +25,10 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
     private FacultyDao facultyDao;
     private UserDao userDao;
     private final static String SQL_ADD_APPLICATION =
-            "insert into application(\"user\",faculty,priority,status) values (?,?,?,?);";
+            "insert into application (\"user\", faculty, priority, status, education_type)" +
+                    "values (?,?,?,?,?);";
+    private final static String SQL_ADD_GRADE =
+            "insert into grade(subject, score, application) VALUES (?,?,?);";
     private final static String SQL_GET_USERS_APPLICATIONS =
             "select * from application where \"user\"=?;";
 
@@ -40,23 +43,31 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
+        PreparedStatement addGradeStatement = null;
         try {
             connection = manager.getConnection();
             log.info("add->connected");
             connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             statement = connection.prepareStatement(SQL_ADD_APPLICATION,
                     PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setLong(1, item.getApplicant().getId());
             statement.setLong(2, item.getFaculty().getId());
             statement.setInt(3, item.getPriority());
             statement.setString(4, item.getStatus().toString());
-            resultSet = statement.executeQuery();
+            statement.setString(5, item.getTypeOfEducation().toString());
+            if (statement.executeUpdate() == 0) {
+                throw new SQLException("application wasn't inserted");
+            }
+            resultSet = statement.getGeneratedKeys();
             log.info("add->application added");
             if (resultSet.next()) {
                 item.setId(resultSet.getLong(Fields.APPLICATION_ID));
             }
+            addGradeStatement = connection.prepareStatement(SQL_ADD_GRADE,
+                    PreparedStatement.RETURN_GENERATED_KEYS);
             for (Grade grade : item.getGrades()) {
-                gradeDao.add(grade);
+                addGrade(addGradeStatement, grade, item);
             }
             log.info("add->grades added");
             manager.commitAndClose(connection);
@@ -64,6 +75,33 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
         } catch (SQLException e) {
             log.error("add", e);
             manager.rollBackAndClose(connection);
+            throw e;
+        } finally {
+            manager.close(resultSet)
+                    .close(statement)
+                    .close(addGradeStatement);
+        }
+    }
+
+    public void addGrade(PreparedStatement statement, Grade grade, Application application) throws SQLException {
+        ResultSet rs = null;
+        try {
+            statement.setLong(1, grade.getSubject().getId());
+            statement.setInt(2, grade.getScore());
+            statement.setLong(3, application.getId());
+            statement.execute();
+            rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                grade.setId(rs.getLong(Fields.GRADE_ID));
+            } else {
+                throw new SQLException("addGrade: no generated keys");
+            }
+            log.info("addGrade: added grade, grade id=" + grade.getId());
+        } catch (SQLException e) {
+            log.error("addGrade", e);
+            throw e;
+        } finally {
+            manager.close(rs);
         }
     }
 
@@ -126,17 +164,17 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
         public Application mapRow(ResultSet resultSet) {
             try {
                 log.info("mapRow->mappingStarted");
-                Application application=new Application();
+                Application application = new Application();
                 application.setId(resultSet.getLong(Fields.APPLICATION_ID))
                         .setPriority(resultSet.getInt(Fields.APPLICATION_PRIORITY))
                         .setStatus(ApplicationStatus.valueOf(
-                                        resultSet.getString(Fields.APPLICATION_STATUS)
-                                )
-                        );
+                                resultSet.getString(Fields.APPLICATION_STATUS)))
+                        .setTypeOfEducation(TypeOfEducation.valueOf(
+                                resultSet.getString(Fields.APPLICATION_EDUCATION_TYPE)));
                 log.info("map->mappingFinished");
                 return application;
             } catch (SQLException e) {
-                log.error("mapRow->",e);
+                log.error("mapRow->", e);
                 return null;
             }
         }
@@ -144,12 +182,12 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
 
     public static void main(String[] args) {
         try {
-            ApplicationDao dao=new ApplicationDaoPostgreImpl();
-            List<Application> applications=dao.getUsersApplication(2);
-            for (Application a:applications){
+            ApplicationDao dao = new ApplicationDaoPostgreImpl();
+            List<Application> applications = dao.getUsersApplication(2);
+            for (Application a : applications) {
                 System.out.println(a);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
