@@ -12,7 +12,6 @@
                 <th>id</th>
                 <th>email</th>
                 <th>role</th>
-                <th>block</th>
             </tr>
             <c:forEach items="${users}" var="user">
                 <tr>
