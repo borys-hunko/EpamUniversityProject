@@ -11,10 +11,12 @@
     </a>
     <br>
     <table border="1px">
-        <tr>id</tr>
-        <tr>name</tr>
-        <tr>budget places</tr>
-        <tr>total places</tr>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>budget places</th>
+            <th>total places</th>
+        </tr>
         <c:forEach items="${faculties}" var="faculty">
             <tr>
                 <td>${faculty.id}</td>

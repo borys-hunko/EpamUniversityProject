@@ -10,9 +10,11 @@
         <body>
         <h1>Applicant</h1>
             <table>
-                <tr>faculty </tr>
-                <tr>budget places </tr>
-                <tr>all places </tr>
+                <tr>
+                    <th>faculty</th>
+                    <th>budget places </th>
+                    <th>all places </th>
+                </tr>
                 <c:forEach items="${faculties}" var="faculty">
                         <tr>
                             <td>${faculty.name}</td>
