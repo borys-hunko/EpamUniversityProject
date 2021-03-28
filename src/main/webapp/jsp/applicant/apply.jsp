@@ -7,14 +7,18 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<span>Sign up</span>
-<span color="red"><%=(request.getAttribute("error") == null) ? "" : request.getAttribute("error")%></span>
-<form action="<c:url value="/applicant/apply"/>" method="post">
+    <span>${faculty.name}</span>
+    <span><%=(request.getAttribute("errorMsg") == null) ? "" : request.getAttribute("error")%></span>
+    <form action="<c:url value="/applicant/apply"/>" method="post">
     <label for="priority">priority</label>
     <input type="number" name="priority" id="priority"><br>
+    <label for="paid">paid</label>
+    <input type="radio" name="education_type" id="paid" value="PAID" checked><br>
+    <label for="state_funded">state funded</label>
+    <input type="radio" name="education_type" id="state_funded" value="STATE_FUNDED"/><br>
     <c:forEach items="${faculty.requiredSubjects}" var="subject">
-        <label>${subject.name}</label>
-        <input type="number" name="results"/>
+        <label for="${subject.name}">${subject.name}</label>
+        <input type="number" name="results" id="${subject.name}"/><br>
     </c:forEach>
     <input type="submit">
 </form>
