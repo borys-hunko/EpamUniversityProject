@@ -37,8 +37,9 @@ public class LogInSignUpFilter implements Filter {
             } else {
                 response.sendRedirect(Paths.URL_APPLICANT_HOME);
             }
+        }else {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
