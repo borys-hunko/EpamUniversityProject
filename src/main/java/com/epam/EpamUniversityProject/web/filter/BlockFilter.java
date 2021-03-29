@@ -3,7 +3,7 @@ package com.epam.EpamUniversityProject.web.filter;
 import com.epam.EpamUniversityProject.model.User;
 import com.epam.EpamUniversityProject.repository.dao.impl.UserDaoPostgresImpl;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.UserDao;
-import com.epam.EpamUniversityProject.web.utils.Paths;
+import com.epam.EpamUniversityProject.utils.Paths;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -26,12 +26,18 @@ public class BlockFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect(Paths.URL_LOG_IN);
+            return;
+        }
+
         try {
             //get user from db to check if he is blocked
             //because he an be blocked during session
@@ -43,8 +49,6 @@ public class BlockFilter implements Filter {
                 request.getServletContext()
                         .getRequestDispatcher(Paths.PAGE_ERROR)
                         .forward(request, response);
-            } else {
-                log.info("doFilter: user isn't blocked");
             }
         } catch (SQLException e) {
             log.debug("doFilter->", e);
