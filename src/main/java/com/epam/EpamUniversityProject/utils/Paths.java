@@ -18,6 +18,7 @@ public final class Paths {
     public static final String ROOT = "/*";
     public static final String URL_LOG_IN = "/logIn";
     public static final String URL_SIGN_UP="/signUp";
+    public static final String URL_LOG_PUT = "/logOut";
     public static final String URL_APPLICANT="/applicant/*";
     public static final String URL_APPLICANT_NONE="/applicant";
     public static final String URL_APPLICANT_HOME="/applicant/home";
