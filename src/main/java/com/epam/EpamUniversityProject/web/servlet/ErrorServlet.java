@@ -1,6 +1,6 @@
 package com.epam.EpamUniversityProject.web.servlet;
 
-import com.epam.EpamUniversityProject.web.utils.Paths;
+import com.epam.EpamUniversityProject.utils.Paths;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

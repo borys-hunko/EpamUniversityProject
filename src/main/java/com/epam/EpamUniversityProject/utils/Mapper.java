@@ -1,4 +1,4 @@
-package com.epam.EpamUniversityProject.repository.util;
+package com.epam.EpamUniversityProject.utils;
 
 import java.sql.ResultSet;
 

@@ -1,7 +1,7 @@
 package com.epam.EpamUniversityProject.web.servlet.admin;
 
 
-import com.epam.EpamUniversityProject.web.utils.Paths;
+import com.epam.EpamUniversityProject.utils.Paths;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

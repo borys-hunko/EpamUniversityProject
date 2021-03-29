@@ -3,9 +3,9 @@ package com.epam.EpamUniversityProject.repository.dao.impl;
 import com.epam.EpamUniversityProject.model.Faculty;
 import com.epam.EpamUniversityProject.model.Subject;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.FacultyDao;
-import com.epam.EpamUniversityProject.repository.util.DBManager;
-import com.epam.EpamUniversityProject.repository.util.Fields;
-import com.epam.EpamUniversityProject.repository.util.Mapper;
+import com.epam.EpamUniversityProject.utils.DBManager;
+import com.epam.EpamUniversityProject.utils.Fields;
+import com.epam.EpamUniversityProject.utils.Mapper;
 import org.apache.log4j.Logger;
 
 import java.sql.*;

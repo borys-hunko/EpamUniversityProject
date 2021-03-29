@@ -7,7 +7,9 @@ import com.epam.EpamUniversityProject.repository.dao.impl.ApplicationDaoPostgreI
 import com.epam.EpamUniversityProject.repository.dao.impl.FacultyDaoPostgresImpl;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.ApplicationDao;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.FacultyDao;
-import com.epam.EpamUniversityProject.web.utils.Paths;
+import com.epam.EpamUniversityProject.utils.FacultySorter;
+import com.epam.EpamUniversityProject.utils.Paths;
+import com.epam.EpamUniversityProject.utils.Sorter;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -42,7 +44,15 @@ public class UserHomeServlet extends HttpServlet {
             List<Faculty> faculties = facultyDao.getAll();
             log.info("doGet->retrieve faculties");
             List<Application> applications = applicationDao.getUsersApplication(user.getId());
+            //get applied faculties to mark them as "applied" on the page
             List<Faculty> appliedFaculties=getAppliedFaculties(applications);
+            //get type of sort
+            String sort=req.getParameter("sort");
+            Sorter<Faculty> sorter=new FacultySorter();
+            if (sort==null){
+                sort=FacultySorter.NAME;
+            }
+            sorter.sort(sort,faculties);
             req.setAttribute("faculties", faculties);
             req.setAttribute("applied",appliedFaculties);
             req.getServletContext()

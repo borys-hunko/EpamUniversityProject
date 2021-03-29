@@ -1,5 +1,6 @@
 package com.epam.EpamUniversityProject.model;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,4 +83,8 @@ public class Faculty {
     public int hashCode() {
         return Objects.hash(id, name, budgetPlaces, totalPlaces, requiredSubjects);
     }
+
+    public static final Comparator<Faculty> COMPARE_BY_NAME = (o1, o2) -> o1.getName().compareTo(o2.name);
+    public static final Comparator<Faculty> COMPARE_BY_BUDGET_PLACES = (o1, o2) -> o1.budgetPlaces - o2.budgetPlaces;
+    public static final Comparator<Faculty> COMPARE_BY_TOTAL_PLACES = (o1, o2) -> o1.totalPlaces - o2.totalPlaces;
 }

@@ -1,4 +1,4 @@
-package com.epam.EpamUniversityProject.web.utils;
+package com.epam.EpamUniversityProject.utils;
 
 public final class Paths {
     public static final String PAGE_ERROR="/jsp/error.jsp";
@@ -6,6 +6,7 @@ public final class Paths {
     public static final String PAGE_SIGN_UP="/jsp/signUp.jsp";
     public static final String PAGE_APPLICANT_HOME ="/jsp/applicant/applicantHome.jsp";
     public static final String PAGE_APPLICANT_APPLY="/jsp/applicant/apply.jsp";
+    public static final String PAGE_APPLICANT_APPLICATIONS = "/jsp/applicant/applications.jsp";
     public static final String PAGE_ADMIN_HOME="/jsp/admin/adminHome.jsp";
     public static final String PAGE_ADMIN_FACULTIES="/jsp/admin/faculties.jsp";
     public static final String PAGE_ADMIN_USERS="/jsp/admin/users.jsp";
@@ -21,6 +22,7 @@ public final class Paths {
     public static final String URL_APPLICANT_NONE="/applicant";
     public static final String URL_APPLICANT_HOME="/applicant/home";
     public static final String URL_APPLICANT_APPLY="/applicant/apply";
+    public static final String URL_APPLICANT_APPLICATIONS = "/applicant/applications";
     public static final String URL_ADMIN="/admin/*";
     public static final String URL_ADMIN_NONE="/admin";
     public static final String URL_ADMIN_HOME="/admin/home";

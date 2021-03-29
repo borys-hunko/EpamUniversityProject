@@ -3,7 +3,7 @@ package com.epam.EpamUniversityProject.web.servlet.admin;
 import com.epam.EpamUniversityProject.model.User;
 import com.epam.EpamUniversityProject.repository.dao.impl.UserDaoPostgresImpl;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.UserDao;
-import com.epam.EpamUniversityProject.web.utils.Paths;
+import com.epam.EpamUniversityProject.utils.Paths;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

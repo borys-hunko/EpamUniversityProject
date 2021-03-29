@@ -5,9 +5,9 @@ import com.epam.EpamUniversityProject.repository.dao.interfaces.ApplicationDao;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.FacultyDao;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.GradeDao;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.UserDao;
-import com.epam.EpamUniversityProject.repository.util.DBManager;
-import com.epam.EpamUniversityProject.repository.util.Fields;
-import com.epam.EpamUniversityProject.repository.util.Mapper;
+import com.epam.EpamUniversityProject.utils.DBManager;
+import com.epam.EpamUniversityProject.utils.Fields;
+import com.epam.EpamUniversityProject.utils.Mapper;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;

@@ -2,7 +2,7 @@ package com.epam.EpamUniversityProject.web.filter;
 
 import com.epam.EpamUniversityProject.model.Role;
 import com.epam.EpamUniversityProject.model.User;
-import com.epam.EpamUniversityProject.web.utils.Paths;
+import com.epam.EpamUniversityProject.utils.Paths;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
