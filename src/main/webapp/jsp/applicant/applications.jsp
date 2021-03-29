@@ -22,7 +22,6 @@
             <td>${application.faculty.name}</td>
             <td>${application.typeOfEducation}</td>
             <td>${application.status}</td>
-            <td>${application.priority}</td>
             <td>
                 <a href="<c:url value="/applicant/applications/update?id=${application.id}" />">
                     <button>edit</button>

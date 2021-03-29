@@ -6,7 +6,6 @@ public class Application {
     private long id;
     private User applicant;
     private Faculty faculty;
-    private int priority;
     private ApplicationStatus status;
     private TypeOfEducation typeOfEducation;
     private List<Grade> grades;
@@ -35,15 +34,6 @@ public class Application {
 
     public Application setFaculty(Faculty faculty) {
         this.faculty = faculty;
-        return this;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public Application setPriority(int priority) {
-        this.priority = priority;
         return this;
     }
 
@@ -80,7 +70,6 @@ public class Application {
                 "id=" + id +
                 ", applicant=" + applicant +
                 ", faculty=" + faculty +
-                ", priority=" + priority +
                 ", status=" + status +
                 ", typeOfEducation=" + typeOfEducation +
                 ", grades=" + grades +

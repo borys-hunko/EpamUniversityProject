@@ -53,16 +53,13 @@ public class ApplyServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String priorityAsString = req.getParameter("priority");
         String educationTypeAsString = req.getParameter("education_type");
         String[] resultsAsString = req.getParameterValues("results");
-        if (priorityAsString == null || priorityAsString.isEmpty() ||
-                resultsAsString == null || resultsAsString.length != faculty.getRequiredSubjects().size()) {
+        if (resultsAsString == null || resultsAsString.length != faculty.getRequiredSubjects().size()) {
             log.info("doPost: some fields are empty");
             req.setAttribute("errorMsg", "ALL fields must be filled!!!");
             doGet(req, resp);
         } else {
-            int priority = Integer.parseInt(priorityAsString);
             HttpSession session = req.getSession();
             log.info("doPost: application mapping started");
             List<Grade> grades = mapGrades(resultsAsString);
@@ -72,8 +69,7 @@ public class ApplyServlet extends HttpServlet {
                     .setFaculty(faculty)
                     .setTypeOfEducation(TypeOfEducation.valueOf(educationTypeAsString))
                     .setStatus(ApplicationStatus.NOT_PROCEED)
-                    .setGrades(grades)
-                    .setPriority(priority);
+                    .setGrades(grades);
             log.info("doPost: mapped application");
             try {
                 log.info("add application");

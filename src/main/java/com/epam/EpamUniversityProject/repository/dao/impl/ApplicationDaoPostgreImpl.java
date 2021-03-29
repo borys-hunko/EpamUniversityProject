@@ -25,8 +25,8 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
     private FacultyDao facultyDao;
     private UserDao userDao;
     private final static String SQL_ADD_APPLICATION =
-            "insert into application (\"user\", faculty, priority, status, education_type)" +
-                    "values (?,?,?,?,?);";
+            "insert into application (\"user\", faculty, status, education_type)" +
+                    "values (?,?,?,?);";
     private final static String SQL_ADD_GRADE =
             "insert into grade(subject, score, application) VALUES (?,?,?);";
     private final static String SQL_GET_USERS_APPLICATIONS =
@@ -53,9 +53,8 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
                     PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setLong(1, item.getApplicant().getId());
             statement.setLong(2, item.getFaculty().getId());
-            statement.setInt(3, item.getPriority());
-            statement.setString(4, item.getStatus().toString());
-            statement.setString(5, item.getTypeOfEducation().toString());
+            statement.setString(3, item.getStatus().toString());
+            statement.setString(4, item.getTypeOfEducation().toString());
             if (statement.executeUpdate() == 0) {
                 throw new SQLException("application wasn't inserted");
             }
@@ -166,7 +165,6 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
                 log.info("mapRow->mappingStarted");
                 Application application = new Application();
                 application.setId(resultSet.getLong(Fields.APPLICATION_ID))
-                        .setPriority(resultSet.getInt(Fields.APPLICATION_PRIORITY))
                         .setStatus(ApplicationStatus.valueOf(
                                 resultSet.getString(Fields.APPLICATION_STATUS)))
                         .setTypeOfEducation(TypeOfEducation.valueOf(

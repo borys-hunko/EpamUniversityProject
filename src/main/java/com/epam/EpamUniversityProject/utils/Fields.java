@@ -27,7 +27,6 @@ public final class Fields {
     public static final String APPLICATION_ID="id";
     public static final String APPLICATION_USER="user";
     public static final String APPLICATION_FACULTY="faculty";
-    public static final String APPLICATION_PRIORITY="priority";
     public static final String APPLICATION_STATUS="status";
     public static final String APPLICATION_EDUCATION_TYPE="education_type";
 }
