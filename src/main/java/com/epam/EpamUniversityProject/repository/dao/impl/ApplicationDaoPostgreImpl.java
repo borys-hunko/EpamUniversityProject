@@ -19,6 +19,7 @@ import java.util.List;
 
 public class ApplicationDaoPostgreImpl implements ApplicationDao {
     private static final String SQL_UPDATE_STATUS = "update application set status=? where id=?;";
+    private static final String SQL_GET = "select * from application where id=?";
     private final Logger log = Logger.getLogger(ApplicationDaoPostgreImpl.class);
     private final Mapper<Application> applicationMapper = new ApplicationMapper();
     private final DBManager manager = DBManager.getInstance();
@@ -33,6 +34,7 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
     private final static String SQL_GET_ALL = "select * from application;";
     private final static String SQL_GET_USERS_APPLICATIONS =
             "select * from application where \"user\"=?;";
+    private static final String SQL_DELETE = "delete from application where id=?;";
 
     public ApplicationDaoPostgreImpl() {
         gradeDao = new GradeDaoPostgresImpl();
@@ -108,8 +110,30 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
 
     @Override
     public Application get(long id) throws SQLException {
-
-        return null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Application application = null;
+        try {
+            log.info("get: start getting application");
+            connection = manager.getConnection();
+            statement = connection.prepareStatement(SQL_GET);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                application = applicationMapper.mapRow(resultSet);
+                addPropertiesFromOtherTables(resultSet, application);
+            }
+            log.info("get: got application");
+        } catch (SQLException e) {
+            log.error("get:", e);
+            throw e;
+        } finally {
+            manager.close(resultSet)
+                    .close(statement)
+                    .close(connection);
+        }
+        return application;
     }
 
     @Override
@@ -118,8 +142,27 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
     }
 
     @Override
-    public void delete(long id) {
-
+    public void delete(long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            log.info("delete: start deleting application");
+            connection = manager.getConnection();
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(SQL_DELETE);
+            statement.setLong(1, id);
+            if (statement.executeUpdate() == 0) {
+                throw new SQLException("delete didn't occur");
+            }
+            manager.commitAndClose(connection);
+            log.info("delete: deleted application");
+        } catch (SQLException e) {
+            manager.rollBackAndClose(connection);
+            log.error("delete: ", e);
+            throw e;
+        } finally {
+            manager.close(statement);
+        }
     }
 
     @Override
@@ -144,17 +187,34 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
         return applications;
     }
 
+    /**
+     * create applications,fill its fields and add it to application list
+     *
+     * @param rs           result set, which contains data from application table
+     * @param applications applications list
+     */
     private void mapApplicationList(ResultSet rs, List<Application> applications) throws SQLException {
         while (rs.next()) {
             Application application = applicationMapper.mapRow(rs);
-            Faculty faculty = facultyDao.get(rs.getLong(Fields.APPLICATION_FACULTY));
-            User user = userDao.get(rs.getLong(Fields.APPLICATION_USER));
-            List<Grade> grades = gradeDao.getApplicationGrades(application.getId());
-            application.setApplicant(user)
-                    .setFaculty(faculty)
-                    .setGrades(grades);
+            addPropertiesFromOtherTables(rs, application);
             applications.add(application);
         }
+    }
+
+    /**
+     * retrieve properties(faculty,applicant,grades) from outer tables
+     * because applications has a lot of foreign keys
+     *
+     * @param rs          result set, which contains data from application table(including foreign keys on outer tables)
+     * @param application application to be filled
+     */
+    private void addPropertiesFromOtherTables(ResultSet rs, Application application) throws SQLException {
+        Faculty faculty = facultyDao.get(rs.getLong(Fields.APPLICATION_FACULTY));
+        User user = userDao.get(rs.getLong(Fields.APPLICATION_USER));
+        List<Grade> grades = gradeDao.getApplicationGrades(application.getId());
+        application.setApplicant(user)
+                .setFaculty(faculty)
+                .setGrades(grades);
     }
 
     @Override
@@ -231,10 +291,11 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
     public static void main(String[] args) {
         try {
             ApplicationDao dao = new ApplicationDaoPostgreImpl();
-            List<Application> applications = dao.getUsersApplication(2);
-            for (Application a : applications) {
-                System.out.println(a);
-            }
+//            List<Application> applications = dao.getUsersApplication(2);
+//            for (Application a : applications) {
+//                System.out.println(a);
+//            }
+            System.out.println(dao.get(2));
         } catch (Exception e) {
             e.printStackTrace();
         }

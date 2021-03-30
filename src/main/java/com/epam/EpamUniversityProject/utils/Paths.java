@@ -24,6 +24,7 @@ public final class Paths {
     public static final String URL_APPLICANT_HOME="/applicant/home";
     public static final String URL_APPLICANT_APPLY="/applicant/apply";
     public static final String URL_APPLICANT_APPLICATIONS = "/applicant/applications";
+    public static final String URL_APPLICANT_DELETE_APPLICATION="/applicant/applications/delete";
     public static final String URL_ADMIN="/admin/*";
     public static final String URL_ADMIN_NONE="/admin";
     public static final String URL_ADMIN_HOME="/admin/home";
