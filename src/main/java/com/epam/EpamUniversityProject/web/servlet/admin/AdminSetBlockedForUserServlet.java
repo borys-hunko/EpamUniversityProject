@@ -1,7 +1,11 @@
 package com.epam.EpamUniversityProject.web.servlet.admin;
 
+import com.epam.EpamUniversityProject.model.Application;
+import com.epam.EpamUniversityProject.model.ApplicationStatus;
 import com.epam.EpamUniversityProject.model.User;
+import com.epam.EpamUniversityProject.repository.dao.impl.ApplicationDaoPostgreImpl;
 import com.epam.EpamUniversityProject.repository.dao.impl.UserDaoPostgresImpl;
+import com.epam.EpamUniversityProject.repository.dao.interfaces.ApplicationDao;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.UserDao;
 import com.epam.EpamUniversityProject.utils.Paths;
 import org.apache.log4j.Logger;
@@ -13,15 +17,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(Paths.URL_ADMIN_SET_BLOCKED_FOR_USER)
 public class AdminSetBlockedForUserServlet extends HttpServlet {
-    private final Logger log=Logger.getLogger(AdminSetBlockedForUserServlet.class);
-    private UserDao dao;
+    private final Logger log = Logger.getLogger(AdminSetBlockedForUserServlet.class);
+    private UserDao userDao;
+    private ApplicationDao applicationDao;
 
     @Override
     public void init() throws ServletException {
-        dao=new UserDaoPostgresImpl();
+        userDao = new UserDaoPostgresImpl();
+        applicationDao = new ApplicationDaoPostgreImpl();
     }
 
     @Override
@@ -34,14 +41,27 @@ public class AdminSetBlockedForUserServlet extends HttpServlet {
             req.getServletContext()
                     .getRequestDispatcher(Paths.PAGE_ERROR)
                     .forward(req, resp);
-        }else {
-            long id=Long.parseLong(idAsString);
+        } else {
+            long id = Long.parseLong(idAsString);
             try {
-                User user=dao.get(id);
-                boolean newVal=!user.isBlocked();
-                log.info("doGet: is blocked new value is "+newVal);
+                User user = userDao.get(id);
+                List<Application> applications = applicationDao.getUsersApplication(user.getId());
+                //if we block user,his applications will be rejected
+                //otherwise their status will become NOT_PROCEED
+                if (user.isBlocked()) {
+                    for (Application application : applications) {
+                        application.setStatus(ApplicationStatus.NOT_PROCEED);
+                    }
+                } else {
+                    for (Application application : applications) {
+                        application.setStatus(ApplicationStatus.NOT_APPLIED);
+                    }
+                }
+                boolean newVal = !user.isBlocked();
+                log.info("doGet: is blocked new value is " + newVal);
                 user.setBlocked(newVal);
-                dao.update(user);
+                userDao.update(user);
+                applicationDao.updateStatusForAllApplications(applications);
                 resp.sendRedirect(Paths.URL_ADMIN_USERS);
             } catch (SQLException e) {
                 e.printStackTrace();
