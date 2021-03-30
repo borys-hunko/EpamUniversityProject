@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ApplicationDaoPostgreImpl implements ApplicationDao {
+    private static final String SQL_UPDATE_STATUS = "update application set status=? where id=?;";
     private final Logger log = Logger.getLogger(ApplicationDaoPostgreImpl.class);
     private final Mapper<Application> applicationMapper = new ApplicationMapper();
     private final DBManager manager = DBManager.getInstance();
@@ -29,6 +30,7 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
                     "values (?,?,?,?);";
     private final static String SQL_ADD_GRADE =
             "insert into grade(subject, score, application) VALUES (?,?,?);";
+    private final static String SQL_GET_ALL = "select * from application;";
     private final static String SQL_GET_USERS_APPLICATIONS =
             "select * from application where \"user\"=?;";
 
@@ -122,7 +124,37 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
 
     @Override
     public List<Application> getAll() throws SQLException {
-        return null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        List<Application> applications = new ArrayList<>();
+        try {
+            connection = manager.getConnection();
+            statement = connection.prepareStatement(SQL_GET_ALL);
+            rs = statement.executeQuery();
+            mapApplicationList(rs, applications);
+        } catch (SQLException e) {
+            log.error("getUsersApplication->", e);
+            throw e;
+        } finally {
+            manager.close(rs)
+                    .close(statement)
+                    .close(connection);
+        }
+        return applications;
+    }
+
+    private void mapApplicationList(ResultSet rs, List<Application> applications) throws SQLException {
+        while (rs.next()) {
+            Application application = applicationMapper.mapRow(rs);
+            Faculty faculty = facultyDao.get(rs.getLong(Fields.APPLICATION_FACULTY));
+            User user = userDao.get(rs.getLong(Fields.APPLICATION_USER));
+            List<Grade> grades = gradeDao.getApplicationGrades(application.getId());
+            application.setApplicant(user)
+                    .setFaculty(faculty)
+                    .setGrades(grades);
+            applications.add(application);
+        }
     }
 
     @Override
@@ -136,16 +168,7 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
             statement = connection.prepareStatement(SQL_GET_USERS_APPLICATIONS);
             statement.setLong(1, userID);
             rs = statement.executeQuery();
-            while (rs.next()) {
-                Application application = applicationMapper.mapRow(rs);
-                Faculty faculty = facultyDao.get(rs.getLong(Fields.APPLICATION_FACULTY));
-                User user = userDao.get(rs.getLong(Fields.APPLICATION_USER));
-                List<Grade> grades = gradeDao.getApplicationGrades(application.getId());
-                application.setApplicant(user)
-                        .setFaculty(faculty)
-                        .setGrades(grades);
-                applications.add(application);
-            }
+            mapApplicationList(rs, applications);
         } catch (SQLException e) {
             log.error("getUsersApplication->", e);
             throw e;
@@ -155,6 +178,33 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
                     .close(connection);
         }
         return applications;
+    }
+
+    @Override
+    public void updateStatusForAllApplications(List<Application> applications) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = manager.getConnection();
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(SQL_UPDATE_STATUS);
+            log.info("updateStatusForAllApplications: started");
+            for (Application application : applications) {
+                statement.setString(1, application.getStatus().toString());
+                statement.setLong(2, application.getId());
+                if (statement.executeUpdate() == 0) {
+                    throw new SQLException("update doesn't occurred");
+                }
+            }
+            log.info("updateStatusForAllApplications: finished");
+            manager.commitAndClose(connection);
+        } catch (SQLException e) {
+            log.error("updateStatusForAllApplications: ", e);
+            manager.rollBackAndClose(connection);
+            throw e;
+        } finally {
+            manager.close(statement);
+        }
     }
 
     private class ApplicationMapper implements Mapper<Application> {
