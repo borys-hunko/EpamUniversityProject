@@ -3,8 +3,10 @@ package com.epam.EpamUniversityProject.utils;
 import com.epam.EpamUniversityProject.model.Faculty;
 
 import java.util.List;
-
-public class FacultySorter extends Sorter<Faculty> {
+/**
+ * sort list of faculties
+ * */
+public class FacultySorter implements Sorter<Faculty> {
     public static final String NAME = "name";
     public static final String NAME_DESC = "nameDesc";
     public static final String BUDGET_PLACES = "budgetPlaces";

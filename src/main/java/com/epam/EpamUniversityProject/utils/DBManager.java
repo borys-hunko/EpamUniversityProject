@@ -11,11 +11,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
+/**
+ * singleton class to perform some frequent tasks
+ * */
 public class DBManager {
     private static final Logger logger = Logger.getLogger(DBManager.class);
     private static DBManager instance;
 
+    /**
+     * @return instance of this class
+     * if needed initialize this instance
+     * */
     public static synchronized DBManager getInstance() {
         if (instance == null) {
             instance = new DBManager();
@@ -26,7 +32,9 @@ public class DBManager {
     private DBManager() {
     }
 
-
+    /**
+     * @return DB connection
+     * */
     public Connection getConnection() throws SQLException {
         Connection connection = null;
         try {
@@ -50,6 +58,11 @@ public class DBManager {
                 "postgres", "pass");
     }
 
+
+    /**
+     * commit transaction and close connection
+     * @param connection connection to close
+     * */
     public void commitAndClose(Connection connection) throws SQLException {
         if (connection != null) {
             connection.commit();
@@ -57,6 +70,10 @@ public class DBManager {
         }
     }
 
+    /**
+     * rollback transaction and close connection
+     * @param connection connetcion to close
+     * */
     public void rollBackAndClose(Connection connection) throws SQLException {
         if (connection != null) {
             connection.rollback();
@@ -64,6 +81,11 @@ public class DBManager {
         }
     }
 
+    /**
+     * close autocloseable
+     * because it is used only to close connection,statements and result set throws SQLException
+     * @return instance of db manager for convenience
+     * */
     public DBManager close(AutoCloseable closeable) throws SQLException {
         if (closeable != null) {
             try {
