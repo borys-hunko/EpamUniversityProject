@@ -3,9 +3,7 @@ package com.epam.EpamUniversityProject.web.servlet.admin;
 import com.epam.EpamUniversityProject.model.Faculty;
 import com.epam.EpamUniversityProject.repository.dao.impl.FacultyDaoPostgresImpl;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.FacultyDao;
-import com.epam.EpamUniversityProject.utils.FacultySorter;
-import com.epam.EpamUniversityProject.utils.Paths;
-import com.epam.EpamUniversityProject.utils.Sorter;
+import com.epam.EpamUniversityProject.utils.*;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -20,8 +18,9 @@ import java.util.List;
 
 @WebServlet(Paths.URL_ADMIN_FACULTIES)
 public class AdminFacultiesServlet extends HttpServlet {
-    private Logger log = Logger.getLogger(AdminFacultiesServlet.class);
+    private final Logger log = Logger.getLogger(AdminFacultiesServlet.class);
     private FacultyDao dao;
+    private static final int ITEMS_PER_PAGE=3;
 
     @Override
     public void init() throws ServletException {
@@ -33,13 +32,12 @@ public class AdminFacultiesServlet extends HttpServlet {
         try {
             List<Faculty> faculties = dao.getAll();
             log.info("retrieve users from db");
-            String sort=req.getParameter("sort");
-            Sorter<Faculty> sorter=new FacultySorter();
-            if (sort==null){
-                sort=FacultySorter.NAME;
-            }
-            sorter.sort(sort,faculties);
-            req.setAttribute("faculties",faculties);
+            PageManager<Faculty> pageManager = new PageManager<>(faculties,
+                    new FacultySorter(),
+                    new Paginator<>(ITEMS_PER_PAGE),
+                    FacultySorter.NAME);
+
+            req.setAttribute("faculties",pageManager.getItemsForPage(req));
             req.getServletContext()
                     .getRequestDispatcher(Paths.PAGE_ADMIN_FACULTIES)
                     .forward(req, resp);
