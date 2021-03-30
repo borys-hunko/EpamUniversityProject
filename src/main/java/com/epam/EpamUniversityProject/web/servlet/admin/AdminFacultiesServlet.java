@@ -3,7 +3,9 @@ package com.epam.EpamUniversityProject.web.servlet.admin;
 import com.epam.EpamUniversityProject.model.Faculty;
 import com.epam.EpamUniversityProject.repository.dao.impl.FacultyDaoPostgresImpl;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.FacultyDao;
+import com.epam.EpamUniversityProject.utils.FacultySorter;
 import com.epam.EpamUniversityProject.utils.Paths;
+import com.epam.EpamUniversityProject.utils.Sorter;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -31,6 +33,12 @@ public class AdminFacultiesServlet extends HttpServlet {
         try {
             List<Faculty> faculties = dao.getAll();
             log.info("retrieve users from db");
+            String sort=req.getParameter("sort");
+            Sorter<Faculty> sorter=new FacultySorter();
+            if (sort==null){
+                sort=FacultySorter.NAME;
+            }
+            sorter.sort(sort,faculties);
             req.setAttribute("faculties",faculties);
             req.getServletContext()
                     .getRequestDispatcher(Paths.PAGE_ADMIN_FACULTIES)

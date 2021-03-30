@@ -10,6 +10,14 @@
         <button>add faculty</button>
     </a>
     <br>
+    <div class="dropdown-content">
+        <a href="<c:url value="/admin/faculties?sort=name"/>">A-Z</a>
+        <a href="<c:url value="/admin/faculties?sort=nameDesc"/>">Z-A</a>
+        <a href="<c:url value="/admin/faculties?sort=budgetPlaces"/>">By budget places(from lower to bigger)</a>
+        <a href="<c:url value="/admin/faculties?sort=budgetPlacesDesc"/>">By budget places(from bigger to lower)</a>
+        <a href="<c:url value="/admin/faculties?sort=totalPlaces"/>">By total places(from lower to bigger)</a>
+        <a href="<c:url value="/admin/faculties?sort=totalPlacesDesc"/>">By total places(from bigger to lower)</a>
+    </div>
     <table border="1px">
         <tr>
             <th>id</th>
