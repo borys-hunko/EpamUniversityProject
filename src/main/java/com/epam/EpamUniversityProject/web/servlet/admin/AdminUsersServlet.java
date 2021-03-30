@@ -1,9 +1,13 @@
 package com.epam.EpamUniversityProject.web.servlet.admin;
 
+import com.epam.EpamUniversityProject.model.Faculty;
 import com.epam.EpamUniversityProject.model.User;
 import com.epam.EpamUniversityProject.repository.dao.impl.UserDaoPostgresImpl;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.UserDao;
+import com.epam.EpamUniversityProject.utils.FacultySorter;
 import com.epam.EpamUniversityProject.utils.Paths;
+import com.epam.EpamUniversityProject.utils.Sorter;
+import com.epam.EpamUniversityProject.utils.UserSorter;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -31,6 +35,12 @@ public class AdminUsersServlet extends HttpServlet {
             log.info("doGet: retrieve user from db");
             List<User> users = dao.getAll();
             log.info("doGet: users are retrieved");
+            String sort=req.getParameter("sort");
+            Sorter<User> sorter=new UserSorter();
+            if (sort==null){
+                sort=UserSorter.NAME;
+            }
+            sorter.sort(sort,users);
             req.setAttribute("users", users);
             req.getServletContext()
                     .getRequestDispatcher(Paths.PAGE_ADMIN_USERS)
@@ -38,6 +48,9 @@ public class AdminUsersServlet extends HttpServlet {
             log.info("doGet:success");
         } catch (SQLException e) {
             log.info("doGet:", e);
+            req.getServletContext()
+                    .getRequestDispatcher(Paths.PAGE_ERROR)
+                    .forward(req, resp);
         }
     }
 }
