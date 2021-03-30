@@ -1,6 +1,7 @@
 package com.epam.EpamUniversityProject.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Application {
     private long id;
@@ -74,5 +75,18 @@ public class Application {
                 ", typeOfEducation=" + typeOfEducation +
                 ", grades=" + grades +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Application that = (Application) o;
+        return id == that.id && Objects.equals(applicant, that.applicant) && Objects.equals(faculty, that.faculty) && status == that.status && typeOfEducation == that.typeOfEducation && Objects.equals(grades, that.grades);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, applicant, faculty, status, typeOfEducation, grades);
     }
 }

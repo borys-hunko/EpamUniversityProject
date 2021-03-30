@@ -1,7 +1,9 @@
 package com.epam.EpamUniversityProject.model;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 
 public class User implements Serializable {
@@ -132,4 +134,22 @@ public class User implements Serializable {
                 ", school='" + school + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && isBlocked == user.isBlocked && Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(fathersName, user.fathersName) && Objects.equals(region, user.region) && Objects.equals(city, user.city) && Objects.equals(school, user.school);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, role, isBlocked, firstName, lastName, fathersName, region, city, school);
+    }
+
+    public static final Comparator<User> EMAIL_COMPARATOR = Comparator.comparing(User::getEmail);
+    public static final Comparator<User> NAME_COMPARATOR = Comparator.comparing(User::getFirstName)
+            .thenComparing(User::getFathersName)
+            .thenComparing(User::getLastName);
 }
