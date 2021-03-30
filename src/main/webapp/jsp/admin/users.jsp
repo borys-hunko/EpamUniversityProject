@@ -7,6 +7,12 @@
     </head>
     <body>
         <h2>Users</h2>
+        <div class="dropdown-content">
+            <a href="<c:url value="/admin/users?sort=name"/>">By name(A-Z)</a>
+            <a href="<c:url value="/admin/users?sort=nameDesc"/>">By name(Z-A)</a>
+            <a href="<c:url value="/admin/users?sort=email"/>">By email(A-Z)</a>
+            <a href="<c:url value="/admin/users?sort=emailDesc"/>">By email(Z-A)</a>
+        </div>
         <table border="1px">
             <tr>
                 <th>id</th>
