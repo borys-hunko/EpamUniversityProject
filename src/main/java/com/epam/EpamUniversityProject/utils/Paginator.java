@@ -7,17 +7,32 @@ import java.util.List;
  * class that split allocate items for specific page
  * */
 public class Paginator<T> {
+    private int itemsPerPage;
+
+
+    public Paginator(int itemsPerPage) {
+        this.itemsPerPage = itemsPerPage;
+    }
+
+    public int getItemsPerPage() {
+        return itemsPerPage;
+    }
+
+    public Paginator<T> setItemsPerPage(int itemsPerPage) {
+        this.itemsPerPage = itemsPerPage;
+        return this;
+    }
+
     /**
      * return list of items needed for page
      * @param allItems list of all items
      * @param pageNum number of pages
-     * @param itemsPerPage items per page
      * */
-    public List<T> getItemsForPage(List<T> allItems, int pageNum, int itemsPerPage){
+    public List<T> getItemsForPage(List<T> allItems, int pageNum){
         int from=(pageNum-1)*itemsPerPage;
         int to=pageNum*itemsPerPage;
         if (to>allItems.size()){
-            to=allItems.size()-1;
+            to=allItems.size();
         }
         return allItems.subList(from,to);
     }
@@ -25,9 +40,8 @@ public class Paginator<T> {
     /**
      * calculate number of pages for the list of items depending on its size
      * @param allItems list of all items
-     * @param itemsPerPage items per page
      * */
-    public int getNumberOfPages(List<T> allItems,int itemsPerPage){
+    public int getNumberOfPages(List<T> allItems){
         int pageNum=allItems.size()/itemsPerPage;
         //if number of items isn't multiple of number of items per page
         //page number round to integer
