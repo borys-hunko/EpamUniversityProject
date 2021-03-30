@@ -33,4 +33,5 @@ public final class Paths {
     public static final String URL_ADMIN_DELETE_FACULTY = "/admin/faculties/delete";
     public static final String URL_ADMIN_USERS="/admin/users";
     public static final String URL_ADMIN_SET_BLOCKED_FOR_USER = "/admin/users/setBlocked";
+    public static final String URL_ADMIN_APPLICATIONS_VIEW = "/admin/applications";
 }
