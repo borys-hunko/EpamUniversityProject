@@ -23,11 +23,6 @@
             <td>${application.typeOfEducation}</td>
             <td>${application.status}</td>
             <td>
-                <a href="<c:url value="/applicant/applications/update?id=${application.id}" />">
-                    <button>edit</button>
-                </a>
-            </td>
-            <td>
                 <a href="<c:url value="/applicant/applications/delete?id=${application.id}"/>">
                 <button>delete</button>
                 </a>
