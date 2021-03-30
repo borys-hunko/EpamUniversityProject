@@ -1,5 +1,6 @@
 package com.epam.EpamUniversityProject.model;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -89,4 +90,10 @@ public class Application {
     public int hashCode() {
         return Objects.hash(id, applicant, faculty, status, typeOfEducation, grades);
     }
+
+    public static final Comparator<Application> EMAIL_COMPARATOR =
+            Comparator.comparing((Application a) -> a.applicant.getEmail())
+                    .thenComparing(Application::getStatus);
+    public static final Comparator<Application> FACULTY_COMPARATOR = (Comparator.comparing((Application a) -> a.faculty.getName()))
+            .thenComparing(Application::getStatus);
 }
