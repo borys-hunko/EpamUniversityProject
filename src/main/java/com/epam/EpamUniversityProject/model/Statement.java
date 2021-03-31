@@ -125,27 +125,4 @@ public class Statement {
         }
         return applicationGradesSum/application.getGrades().size();
     }
-
-    public static void main(String[] args) {
-        try {
-            FacultyDao fDao = new FacultyDaoPostgresImpl();
-            ApplicationDao aDao = new ApplicationDaoPostgreImpl();
-            List<Faculty> faculties = fDao.getAll();
-            List<Application> applications = aDao.getAll();
-            Statement statement = new Statement(faculties, applications);
-            for (Application a : applications) {
-                System.out.print(a.getId() + " " + a.getApplicant().getEmail() + " ");
-                System.out.print(a.getFaculty().getName() + " " + a.getStatus() + " ");
-                System.out.println(a.getTypeOfEducation() + " " + statement.getApplicationGradesAvg(a));
-            }
-            statement.makeFinalStatement();
-            for (Application a : applications) {
-                System.out.print(a.getId() + " " + a.getApplicant().getEmail() + " ");
-                System.out.print(a.getFaculty().getName() + " " + a.getStatus() + " ");
-                System.out.println(a.getTypeOfEducation() + " " + statement.getApplicationGradesAvg(a));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
