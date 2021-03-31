@@ -77,9 +77,7 @@ public class SignUpServlet extends HttpServlet {
             resp.sendRedirect(Paths.URL_APPLICANT_HOME);
         } catch (SQLException e) {
             log.error("doPost->", e);
-            req.getServletContext()
-                    .getRequestDispatcher(Paths.PAGE_ERROR)
-                    .forward(req, resp);
+            resp.sendRedirect(Paths.PAGE_SIGN_UP);
         }
     }
 }

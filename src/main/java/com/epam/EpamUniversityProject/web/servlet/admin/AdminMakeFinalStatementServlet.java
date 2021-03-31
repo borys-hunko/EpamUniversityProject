@@ -38,7 +38,7 @@ public class AdminMakeFinalStatementServlet extends HttpServlet {
             Statement statement = new Statement(faculties, applications);
             statement.makeFinalStatement();
             applicationDao.updateStatusForAllApplications(statement.getApplications());
-            resp.sendRedirect(Paths.URL_ADMIN_APPLICATIONS_VIEW);
+            resp.sendRedirect(Paths.URL_ADMIN_HOME);
         } catch (SQLException e) {
             req.getServletContext()
                     .getRequestDispatcher(Paths.PAGE_ERROR)

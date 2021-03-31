@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="lang"/>
 <html>
 <head>
 <title>Users</title>
@@ -16,13 +18,13 @@
     <table border="1px">
         <tr>
             <th>id</th>
-            <th>user email</th>
-            <th>faculty name</th>
-            <th>status</th>
+            <th><fmt:message key="index.email"/></th>
+            <th><fmt:message key="index.faculty"/></th>
+            <th><fmt:message key="index.status"/></th>
         </tr>
         <c:forEach items="${applications}" var="application">
             <tr>
-                <td>${application.id}</td>
+                <t>${application.id}</t>
                 <td>${application.applicant.email}</td>
                 <td>${application.faculty.name}</td>
                 <td>${application.status}</td>

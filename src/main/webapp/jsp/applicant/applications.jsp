@@ -1,5 +1,7 @@
 <%@ include file="/jspf/directories.jspf"%>
-<html lang="en">
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="lang"/>
+<html>
 <head>
     <title>Applications</title>
     <%@ include file="/jspf/headDirectives.jspf"%>
@@ -7,13 +9,12 @@
 <body>
     <%@ include file="/jspf/applicantLogInedHeader.jspf" %>
     <main class="px-5">
-        <h3>My applications</h3>
+        <h3><fmt:message key="index.applications"/></h3>
         <table class="table">
             <tr>
-                <th>Faculty</th>
-                <th>Education type</th>
-                <th>Status</th>
-                <th>Priority</th>
+                <th><fmt:message key="index.faculty"/></th>
+                <th><fmt:message key="index.educationType"/></th>
+                <th><fmt:message key="index.status"/>tus</th>
             </tr>
             <c:forEach items="${applications}" var="application">
                 <tr>

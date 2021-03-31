@@ -1,13 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html lang="en">
+<%@ include file="/jspf/directories.jspf"%>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="lang"/>
+<html >
 <head>
-    <meta charset="UTF-8">
     <title>faculties</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%@ include file="/jspf/headDirectives.jspf"%>
     </head>
 <body>
-    <c:out value="${param.page}"/>
+    <%@ include file="/jspf/adminHeader.jspf" %>
     <c:choose>
         <c:when test="${param.page==null}">
             <c:set var="pageNum" value="${1+0}"/>
@@ -24,49 +24,69 @@
             <c:set var="sort" value="${param.sort}"/>
         </c:otherwise>
     </c:choose>
-    <a href="<c:url value="/admin/faculties/add"/>">
-        <button>add faculty</button>
-    </a>
-    <br>
-    <div class="dropdown-content">
-        <a href="<c:url value="/admin/faculties?sort=name&page=${pageNum}"/>">A-Z</a>
-        <a href="<c:url value="/admin/faculties?sort=nameDesc&page=${pageNum}"/>">Z-A</a>
-        <a href="<c:url value="/admin/faculties?sort=budgetPlaces&page=${pageNum}"/>">By budget places(from lower to bigger)</a>
-        <a href="<c:url value="/admin/faculties?sort=budgetPlacesDesc&page=${pageNum}"/>">By budget places(from bigger to lower)</a>
-        <a href="<c:url value="/admin/faculties?sort=totalPlaces&page=${pageNum}"/>">By total places(from lower to bigger)</a>
-        <a href="<c:url value="/admin/faculties?sort=totalPlacesDesc&page=${pageNum}"/>">By total places(from bigger to lower)</a>
-    </div>
-    <table border="1px">
+    <main class="px-5">
+
+        <h3><fmt:message key="index.faculties" /></h3>
+        <a href="<c:url value="/admin/faculties/add"/>"><button class="btn btn-primary">add faculty</button> </a>
+        <br>
+        <a class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <fmt:message key="index.sort"/>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="text-decoration-none" href="<c:url value="/admin/faculties?sort=name&page=${pageNum}"/>"><fmt:message key="sort.byName"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/admin/faculties?sort=nameDesc&page=${pageNum}"/>"><fmt:message key="sort.byNameDesc"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/admin/faculties?sort=budgetPlaces&page=${pageNum}"/>"><fmt:message key="sort.byBudgetPlaces"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/admin/faculties?sort=budgetPlacesDesc&page=${pageNum}"/>"><fmt:message key="sort.byBudgetPlacesDesc"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/admin/faculties?sort=totalPlaces&page=${pageNum}"/>"><fmt:message key="sort.byTotalPlaces"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/admin/faculties?sort=totalPlacesDesc&page=${pageNum}"/>"><fmt:message key="sort.byTotalPlacesDesc"/></a></li>
+            </ul>
+            </a>
+        <table class="table">
         <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>budget places</th>
-            <th>total places</th>
+        <th>id</th>
+        <th><fmt:message key="index.faculty"/></th>
+        <th><fmt:message key="index.budgetPlaces"/></th>
+        <th><fmt:message key="index.allPlaces"/></th>
         </tr>
-    <c:forEach items="${faculties}" var="faculty">
-        <tr>
-            <td>${faculty.id}</td>
-            <td>${faculty.name}</td>
-            <td>${faculty.budgetPlaces}</td>
-            <td>${faculty.totalPlaces}</td>
-            <td>
-                <a href="<c:url value="/admin/faculties/update?id=${faculty.id}" />">
-                    <button>edit</button>
-                </a>
-            <td>
-            <td>
-                <a href="<c:url value="/admin/faculties/delete?id=${faculty.id}"/>">
-                    <button>delete</button>
-                </a>
-            </td>
-        </tr>
-    </c:forEach>
-    </table>
-    <%--            pages--%>
-    <c:out value="${pageNum}"/>
-    <c:out value="qty ${pageQty}"/>
-    <c:forEach begin="1" end="${pageQty}" varStatus="loop">
-        <a href="<c:url value="/admin/faculties?sort=${sort}&page=${loop.index}"/>">|${loop.index}|</a>
-    </c:forEach>
+        <c:forEach items="${faculties}" var="faculty">
+            <tr>
+                <td>${faculty.id}</td>
+                <td>${faculty.name}</td>
+                <td>${faculty.budgetPlaces}</td>
+                <td>${faculty.totalPlaces}</td>
+                <td>
+                    <a href="<c:url value="/admin/faculties/update?id=${faculty.id}" />">
+                        <button class="btn btn-primary"><fmt:message key="index.update"/></button>
+                    </a>
+                </td>
+                <td>
+                    <a href="<c:url value="/admin/faculties/delete?id=${faculty.id}"/>">
+                        <button class="btn btn-primary"><fmt:message key="index.delete"/></button>
+                    </a>
+                </td>
+            </tr>
+        </c:forEach>
+        </table>
+        <%--            pages--%>
+        <ul class="pagination start-50 translate-middl">
+        <c:if test="${pageNum!=1}">
+            <li class="page-item"><a class="page-link" href="<c:url value="/admin/faculties?sort=${sort}&page=${pageNum-1}"/>">< </a></li>
+        </c:if>
+
+        <c:forEach begin="1" end="${pageQty}" varStatus="loop">
+            <c:if test="${loop.index!=pageNum}">
+                <li class="page-item"><a class="page-link" href="<c:url value="/admin/faculties?sort=${sort}&page=${loop.index}"/>">${loop.index}</a></li>
+            </c:if>
+            <c:if test="${loop.index==pageNum}">
+                <li class="page-item"><div class="page-link">${loop.index}</div></li>
+            </c:if>
+        </c:forEach>
+
+        <c:if test="${pageNum!=pageQty}">
+            <li class="page-item"><a class="page-link" href="<c:url value="/admin/faculties?sort=${sort}&page=${pageNum+1}"/>">&#62;</a></li>
+        </c:if>
+        </ul>
+    </main>
 </body>
 </html>

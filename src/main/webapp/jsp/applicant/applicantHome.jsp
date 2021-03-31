@@ -1,5 +1,6 @@
 <%@ include file="/jspf/directories.jspf"%>
-
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="lang"/>
 <html lang="en">
     <head>
         <title>Home</title>
@@ -25,49 +26,50 @@
             </c:otherwise>
         </c:choose>
     <main class="px-5">
-        <h3>Faculties</h3>
+        <h3><fmt:message key="index.faculties"/></h3>
+<%--    sort--%>
         <a class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Sort
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=name&page=${pageNum}"/>">A-Z</a></li>
-        <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=nameDesc&page=${pageNum}"/>">Z-A</a></li>
-        <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=budgetPlaces&page=${pageNum}"/>">By budget places(from lower to bigger)</a></li>
-        <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=budgetPlacesDesc&page=${pageNum}"/>">By budget places(from bigger to lower)</a></li>
-        <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=totalPlaces&page=${pageNum}"/>">By total places(from lower to bigger)</a></li>
-        <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=totalPlacesDesc&page=${pageNum}"/>">By total places(from bigger to lower)</a></li>
-        </ul>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <fmt:message key="index.sort"/>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=name&page=${pageNum}"/>"><fmt:message key="sort.byName"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=nameDesc&page=${pageNum}"/>"><fmt:message key="sort.byNameDesc"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=budgetPlaces&page=${pageNum}"/>"><fmt:message key="sort.byBudgetPlaces"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=budgetPlacesDesc&page=${pageNum}"/>"><fmt:message key="sort.byBudgetPlacesDesc"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=totalPlaces&page=${pageNum}"/>"><fmt:message key="sort.totalPlaces"/></a></li>
+                <li><a class="text-decoration-none" href="<c:url value="/applicant/home?sort=totalPlacesDesc&page=${pageNum}"/>"><fmt:message key="sort.totalPlacesDesc"/></a></li>
+            </ul>
         </a>
         <%--        list of faculties--%>
         <div>
 
         </div>
         <table class="table">
-        <tr>
-        <th>faculty</th>
-        <th>budget places </th>
-        <th>all places </th>
-        </tr>
-        <c:forEach items="${faculties}" var="faculty">
             <tr>
-            <td>${faculty.name}</td>
-            <td>${faculty.budgetPlaces}</td>
-            <td>${faculty.totalPlaces}</td>
-            <td>
-            <c:choose>
-                <c:when test = "${applied.contains(faculty)}">
-                    <p><b>applied</b></p>
-                </c:when>
-                <c:otherwise>
-                    <a href="<c:url value="/applicant/apply?facId=${faculty.id}"/>">
-                    <button  class="btn btn-primary">apply</button>
-                    </a>
-                </c:otherwise>
-            </c:choose>
-            </td>
+                <th>faculty</th>
+                <th>budget places </th>
+                <th>all places </th>
             </tr>
-        </c:forEach>
+            <c:forEach items="${faculties}" var="faculty">
+                <tr>
+                    <td>${faculty.name}</td>
+                    <td>${faculty.budgetPlaces}</td>
+                    <td>${faculty.totalPlaces}</td>
+                <td>
+                <c:choose>
+                    <c:when test = "${applied.contains(faculty)}">
+                        <p><b>applied</b></p>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="<c:url value="/applicant/apply?facId=${faculty.id}"/>">
+                        <button  class="btn btn-primary">apply</button>
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+                </td>
+                </tr>
+            </c:forEach>
         </table>
         <%--            pages--%>
         <ul class="pagination start-50 translate-middl">

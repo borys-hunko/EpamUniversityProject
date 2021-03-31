@@ -1,16 +1,19 @@
-    <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-        <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/jspf/directories.jspf"%>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="lang"/>
+<html>
+<head>
+        <title>Home</title>
+        <%@ include file="/jspf/headDirectives.jspf"%>
 
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-        <title>Login V15</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        </head>
-        <body>
-        <h1>ADMIN</h1>
-        <a href="<c:url value="/admin/faculties"/>">faculties</a>
-        <a href="<c:url value="/admin/users"/>">users</a>
-        </body>
-        </html>
+</head>
+<body>
+        <%@ include file="/jspf/adminHeader.jspf" %>
+        <main class="px-5">
+                <h3>ADMIN <c:out value="${user.email}"/></h3>
+                <a href="<c:url value="/admin/faculties"/>"><fmt:message key="index.faculties"/></a><br>
+                <a href="<c:url value="/admin/users"/>"><fmt:message key="admin.users"/></a><br>
+                <a href="<c:url value="/admin/finalStatement"/>"><button class="btn btn-primary"><fmt:message key="admin.makeFinalStatement"/></button></a><br>
+        </main>
+</body>
+</html>

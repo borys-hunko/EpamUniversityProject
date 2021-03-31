@@ -1,30 +1,35 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java"%>
-<html lang="en">
+<%@ include file="/jspf/directories.jspf"%>
+    <fmt:setLocale value="${sessionScope.lang}"/>
+    <fmt:setBundle basename="lang"/>
+    <html lang="en">
 <head>
     <title>Login</title>
-    <meta charset="UTF-8">
+    <%@ include file="/jspf/headDirectives.jspf"%>
 </head>
-ZX<body>
-<span>Sign up</span>
-<span><%=(request.getAttribute("error") == null) ? "" : request.getAttribute("error")%></span>
-<form action="<%=request.getContextPath()%>/signUp" method="post">
-    <label for="email">email</label>
-    <input id="email" name="email" placeholder="Enter email" type="email"><br>
-    <label for="password">password</label>
-    <input id="password" name="password" placeholder="password" type="password"><br>
-    <label for="firstName">first name</label>
-    <input id="firstName" name="firstName" type="text"><br>
-    <label for="lastName">second name</label>
-    <input id="lastName" name="lastName" type="text"><br>
-    <label for="fathersName">fathers name</label>
-    <input id="fathersName" name="fathersName" type="text"><br>
-    <label for="region">region</label>
-    <input id="region" name="region" type="text"><br>
-    <label for="city">city</label>
-    <input id="city" name="city" type="text"><br>
-    <label for="school">school</label>
-    <input id="school" name="school" type="text"><br>
-    <input type="submit">
-</form>
+<body>
+    <%@ include file="/jspf/baseHeader.jspf"%>
+    <main class="mx-5">
+        <h3>Sign up</h3>
+        <span style="clor:red"><%=(request.getAttribute("error") == null) ? "" : request.getAttribute("error")%></span>
+        <form class="w-50 form-signin" action="<%=request.getContextPath()%>/signUp" method="post">
+        <label pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/" class="sr-only" for="email"><fmt:message key="index.email"/></label>
+        <input class="form-control" id="email" name="email" placeholder="Enter email" type="email"><br>
+        <label class="sr-only" for="password"><fmt:message key="index.password"/></label>
+        <input class="form-control" id="password" name="password" placeholder="Enter password" type="password"><br>
+        <label class="sr-only" for="firstName"><fmt:message key="index.firstName"/></label>
+        <input pattern="[A-Za-z&#1040;-&#1071;&#1072;-&#1103;&#1025;&#1105;]+$" class="form-control" id="firstName" name="firstName" placeholder="Enter first name"><br>
+        <label class="sr-only" for="lastName"><fmt:message key="index.lastName"/></label>
+        <input pattern="[A-Za-z&#1040;-&#1071;&#1072;-&#1103;&#1025;&#1105;]+$" class="form-control" id="lastName" name="lastName" placeholder="Enter last name" ><br>
+        <label class="sr-only" for="fathersName"><fmt:message key="index.fathersName"/></label>
+        <input pattern="[A-Za-z&#1040;-&#1071;&#1072;-&#1103;&#1025;&#1105;]+$" class="form-control" id="fathersName" name="fathersName" placeholder="Enter fathers name" ><br>
+        <label class="sr-only" for="region"><fmt:message key="index.region"/></label>
+        <input pattern="[A-Za-z&#1040;-&#1071;&#1072;-&#1103;&#1025;&#1105;]+$" class="form-control" id="region" name="region" placeholder="Enter region" ><br>
+        <label class="sr-only" for="city"><fmt:message key="index.city"/></label>
+        <input pattern="[A-Za-z&#1040;-&#1071;&#1072;-&#1103;&#1025;&#1105;]+$" class="form-control" id="city" name="city" placeholder="Enter city" ><br>
+        <label class="sr-only" for="school"><fmt:message key="index.school"/></label>
+        <input pattern="[A-Za-z&#1040;-&#1071;&#1072;-&#1103;&#1025;&#1105;]+$" class="form-control" id="school" name="school" placeholder="Enter school" ><br>
+        <input class="btn btn-lg btn-primary btn-block" type="submit">
+        </form>
+    </main>
 </body>
 </html>

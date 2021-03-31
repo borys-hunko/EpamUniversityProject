@@ -1,0 +1,8 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="<c:url value="/admin/home"/>">University</a>
+    </div>
+    <a href="${request.getRequestURI()}?lang=en" class="my-2 my-sm-0">|eng|</a>
+    <a href="${request.getRequestURI()}?lang=ru" class="my-2 my-sm-0">|ru|</a>
+    <a href="<c:url value="/signUp"/>"> <button class="btn btn-outline-primary my-2 my-sm-0"><fmt:message key="index.signUp"/></button></a>
+</nav>

@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="<c:url value="/admin/home"/>">University</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value="/admin/faculties"/>"><fmt:message key="index.faculties"/></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value="/admin/users"/>"><fmt:message key="admin.users"/></a>
+                </li>
+            </ul>
+        </div>
+    <a href="${request.getRequestURI()}?lang=en" class="my-2 my-sm-0">|eng|       </a>
+    <a href="${request.getRequestURI()}?lang=ru" class="my-2 my-sm-0">|ru|        </a>
+        <a href="/logOut"><button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><fmt:message key="index.logout"/></button></a>
+    </div>
+</nav>

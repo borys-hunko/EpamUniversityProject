@@ -1,25 +1,30 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/jspf/directories.jspf"%>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="lang"/>
 <html>
     <head>
         <title>add faculty</title>
-        <meta charset="UTF-8">
+        <%@ include file="/jspf/headDirectives.jspf"%>
     </head>
     <body>
-        <form action="<c:url value="/admin/faculties/add"/>" method="post">
-            <label for="name">Faculty name</label>
-            <input type="text" name="name" id="name"/><br>
-            <label for="budgePlaces">Budget places</label>
-            <input type="number" name="budgetPlaces" id="budgePlaces"/><br>
-            <label for="totalPlaces">Total places</label>
-            <input type="number" name="totalPlaces" id="totalPlaces"/><br>
-            <label>Choose subjects:</label><br>
-            <c:forEach items="${subjects}" var="subject">
-                <label for="subject">${subject.name}</label>
-                <input type="checkbox" name="subjects" value="${subject.id}"/><br>
-            </c:forEach>
-            <br>
-            <input type="submit"/>
-        </form>
+        <%@ include file="/jspf/adminHeader.jspf" %>
+        <main class="px-5">
+            <form class="w-50 form-signin"  action="<c:url value="/admin/faculties/add"/>" method="post">
+                <label class="sr-only" for="name"><fmt:message key="index.name"/></label>
+                <input pattern="[A-Za-z&#1040;-&#1071;&#1072;-&#1103;&#1025;&#1105;]+$" class="form-control" type="text" name="name" id="name"/><br>
+                <label  class="sr-only" for="budgePlaces"><fmt:message key="index.budgetPlaces"/></label>
+                <input pattern="[0-9]{,3}" class="form-control" type="number" name="budgetPlaces" id="budgePlaces"/><br>
+                <label class="sr-only" for="totalPlaces"><fmt:message key="index.allPlaces"/></label>
+                <input pattern="[0-9]{,3}" class="form-control" type="number" name="totalPlaces" id="totalPlaces"/><br>
+                <label class="sr-only"><fmt:message key="index.subjects"/>:</label><br>
+                <c:forEach items="${subjects}" var="subject">
+                    <label for="subject">${subject.name}</label>
+                    <input  type="checkbox" name="subjects" value="${subject.id}"/><br>
+                </c:forEach>
+                <br>
+                <input class="btn btn-primary" type="submit"/>
+            </form>
+        </main>
+
     </body>
 </html>

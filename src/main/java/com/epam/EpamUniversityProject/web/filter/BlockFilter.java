@@ -44,10 +44,11 @@ public class BlockFilter implements Filter {
             User checkUser = dao.get(user.getId());
             log.info("doFilter: retrieve user from db");
             if (checkUser.isBlocked()) {
+                session.removeAttribute("user");
                 log.info("doFilter: user is blocked");
-                request.setAttribute("errorMsg", "you are blocked");
+                request.setAttribute("error", "you are blocked");
                 request.getServletContext()
-                        .getRequestDispatcher(Paths.PAGE_ERROR)
+                        .getRequestDispatcher(Paths.URL_LOG_IN)
                         .forward(request, response);
             }
         } catch (SQLException e) {
