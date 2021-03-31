@@ -10,6 +10,7 @@ import com.epam.EpamUniversityProject.repository.dao.interfaces.FacultyDao;
 import com.epam.EpamUniversityProject.utils.Paths;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+
+@WebServlet(Paths.URL_ADMIN_FINAL_STATEMENT)
 public class AdminMakeFinalStatementServlet extends HttpServlet {
     private ApplicationDao applicationDao;
     private FacultyDao facultyDao;
