@@ -6,12 +6,28 @@
         <meta charset="UTF-8">
     </head>
     <body>
+    <c:choose>
+        <c:when test="${param.page==null}">
+            <c:set var="pageNum" value="${1+0}"/>
+        </c:when>
+        <c:otherwise>
+            <fmt:parseNumber var="pageNum" integerOnly="true" value="${param.page}"/>
+        </c:otherwise>
+    </c:choose>
+    <c:choose>
+        <c:when test="${param.sort==null}">
+            <c:set var="sort" value="name"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="sort" value="${param.sort}"/>
+        </c:otherwise>
+    </c:choose>
         <h2>Users</h2>
         <div class="dropdown-content">
-            <a href="<c:url value="/admin/users?sort=name"/>">By name(A-Z)</a>
-            <a href="<c:url value="/admin/users?sort=nameDesc"/>">By name(Z-A)</a>
-            <a href="<c:url value="/admin/users?sort=email"/>">By email(A-Z)</a>
-            <a href="<c:url value="/admin/users?sort=emailDesc"/>">By email(Z-A)</a>
+            <a href="<c:url value="/admin/users?sort=name&page=${pageNum}"/>">By name(A-Z)</a>
+            <a href="<c:url value="/admin/users?sort=nameDesc&page=${pageNum}"/>">By name(Z-A)</a>
+            <a href="<c:url value="/admin/users?sort=email&page=${pageNum}"/>">By email(A-Z)</a>
+            <a href="<c:url value="/admin/users?sort=emailDesc&page=${pageNum}"/>">By email(Z-A)</a>
         </div>
         <table border="1px">
             <tr>
@@ -41,5 +57,17 @@
                 </tr>
             </c:forEach>
         </table>
+    <%--            pages--%>
+    <c:if test="${pageNum!=1}">
+        <a href="<c:url value="/admin/users?sort=${sort}&page=${pageNum-1}"/>">< </a>
+    </c:if>
+
+    <c:forEach begin="1" end="${pageQty}" varStatus="loop">
+        <a href="<c:url value="/admin/users?sort=${sort}&page=${loop.index}"/>">|${loop.index}|</a>
+    </c:forEach>
+
+    <c:if test="${pageNum!=pageQty}">
+        <a href="<c:url value="/admin/users?sort=${sort}&page=${pageNum+1}"/>">&#62;</a>
+    </c:if>
     </body>
     </html>
