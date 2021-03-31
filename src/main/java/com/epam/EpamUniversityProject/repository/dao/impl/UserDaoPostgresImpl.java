@@ -38,10 +38,6 @@ public class UserDaoPostgresImpl implements UserDao {
             connection.setAutoCommit(false);
             statement = connection.
                     prepareStatement(SQL_ADD_USER, PreparedStatement.RETURN_GENERATED_KEYS);
-            //insert into university_user(email, password,
-            //                              , role, first_name, last_name,
-            //                            fathers_name, region, city, school)
-            //values (?, ?, ?, ?, ?, ?, ?, ?);
             statement.setString(1, item.getEmail());
             statement.setString(2, item.getPassword());
             statement.setString(3, item.getRole().toString());
@@ -101,9 +97,6 @@ public class UserDaoPostgresImpl implements UserDao {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            //update university_user 1email=?, 2password=?," +
-            //            "    3is_banned=?, 4\"role\"=?, 5first_name=?, 6last_name=?," +
-            //            "    7fathers_name=?, 8region=?, 9city=?, 10school=? where 11id=?;
             connection = manager.getConnection();
             statement = connection.prepareStatement(SQL_UPDATE_USER);
             statement.setString(1, newItem.getEmail());
@@ -213,15 +206,4 @@ public class UserDaoPostgresImpl implements UserDao {
         }
     }
 
-    public static void main(String[] args) {
-        UserDao dao = new UserDaoPostgresImpl();
-        try {
-//            List<User> users=dao.getAll();
-//            for (User u:users){
-//                System.out.println(u);
-            System.out.println(dao.get(2));
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
 }

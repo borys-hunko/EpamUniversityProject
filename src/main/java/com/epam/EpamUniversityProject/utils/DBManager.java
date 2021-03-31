@@ -45,17 +45,10 @@ public class DBManager {
             DataSource ds = (DataSource) envContext.lookup("jdbc/uni");
             connection = ds.getConnection();
             logger.info("getConnection: connection has been established");
-            return connection;
         } catch (NamingException e) {
             logger.error("Cannot obtain a connection from the pool", e);
-            return dumbGetConnection();
         }
-
-    }
-
-    private Connection dumbGetConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/epam_university",
-                "postgres", "pass");
+        return connection;
     }
 
 

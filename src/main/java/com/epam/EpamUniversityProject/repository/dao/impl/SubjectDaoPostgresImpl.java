@@ -121,14 +121,4 @@ public class SubjectDaoPostgresImpl implements SubjectDao {
             }
         }
     }
-
-    public static void main(String[] args) {
-        try {
-            SubjectDao dao = new SubjectDaoPostgresImpl();
-            Subject subject = dao.get(1);
-            System.out.println(subject.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

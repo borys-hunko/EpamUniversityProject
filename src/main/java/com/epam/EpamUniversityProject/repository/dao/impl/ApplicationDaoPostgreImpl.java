@@ -138,7 +138,7 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
 
     @Override
     public void update(Application newItem) throws SQLException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -288,16 +288,5 @@ public class ApplicationDaoPostgreImpl implements ApplicationDao {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            ApplicationDao dao = new ApplicationDaoPostgreImpl();
-//            List<Application> applications = dao.getUsersApplication(2);
-//            for (Application a : applications) {
-//                System.out.println(a);
-//            }
-            System.out.println(dao.get(2));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 }

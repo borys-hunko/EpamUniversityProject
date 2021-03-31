@@ -1,11 +1,12 @@
 package com.epam.EpamUniversityProject.repository.dao.impl;
 
+import com.epam.EpamUniversityProject.model.Application;
 import com.epam.EpamUniversityProject.model.Grade;
 import com.epam.EpamUniversityProject.model.Subject;
 import com.epam.EpamUniversityProject.repository.dao.interfaces.GradeDao;
-import com.epam.EpamUniversityProject.repository.util.DBManager;
-import com.epam.EpamUniversityProject.repository.util.Fields;
-import com.epam.EpamUniversityProject.repository.util.Mapper;
+import com.epam.EpamUniversityProject.utils.DBManager;
+import com.epam.EpamUniversityProject.utils.Fields;
+import com.epam.EpamUniversityProject.utils.Mapper;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -19,13 +20,15 @@ public class GradeDaoPostgresImpl implements GradeDao {
     private final DBManager manager = DBManager.getInstance();
     private final GradeMapper mapper = new GradeMapper();
     private final Logger log = Logger.getLogger(GradeDaoPostgresImpl.class);
+    private static final String SQL_ADD =
+            "insert into grade(subject, score, application) VALUES (?,?,?);";
     private static final String SQL_GET_ALL_BY_APPLICATION =
             "select grade.id,s.name,grade.score,s.id from grade" +
                     " join subject s on grade.subject = s.id where application=?;";
 
     @Override
     public void add(Grade item) throws SQLException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -42,17 +45,17 @@ public class GradeDaoPostgresImpl implements GradeDao {
 
     @Override
     public void update(Grade newItem) throws SQLException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(long id) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List getAll() throws SQLException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override

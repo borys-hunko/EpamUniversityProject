@@ -244,16 +244,4 @@ public class FacultyDaoPostgresImpl implements FacultyDao {
             }
         }
     }
-
-    public static void main(String[] args) {
-        try {
-            FacultyDao dao = new FacultyDaoPostgresImpl();
-            List<Faculty> faculties = dao.getAll();
-            for (Faculty faculty : faculties) {
-                System.out.println(faculty);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

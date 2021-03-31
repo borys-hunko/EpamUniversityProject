@@ -1,5 +1,9 @@
 package com.epam.EpamUniversityProject.utils;
 
+
+/**
+ * contains all pathes
+ * */
 public final class Paths {
     public static final String PAGE_ERROR="/jsp/error.jsp";
     public static final String PAGE_LOG_IN="/jsp/logIn.jsp";
