@@ -14,7 +14,7 @@
             <tr>
                 <th><fmt:message key="index.faculty"/></th>
                 <th><fmt:message key="index.educationType"/></th>
-                <th><fmt:message key="index.status"/>tus</th>
+                <th><fmt:message key="index.status"/></th>
             </tr>
             <c:forEach items="${applications}" var="application">
                 <tr>
